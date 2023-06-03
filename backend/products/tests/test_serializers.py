@@ -12,7 +12,7 @@ class ProductSerializerTests(TestCase):
             "code": "12345",
             "description": "Test Product",
             "unit_price": "9.99",
-            "commission_rate": "0.50",
+            "commission_rate": "0.07",
         }
 
     def test_serialization(self):
@@ -55,19 +55,19 @@ class ProductSerializerTests(TestCase):
                 "code": "",
                 "description": "Test Product",
                 "unit_price": "9.99",
-                "commission_rate": "0.5",
+                "commission_rate": "0.05",
             },
             {
                 "code": "12345",
                 "description": "",
                 "unit_price": "9.99",
-                "commission_rate": "0.5",
+                "commission_rate": "0.05",
             },
             {
                 "code": "12345",
                 "description": "Test Product",
                 "unit_price": "",
-                "commission_rate": "0.5",
+                "commission_rate": "0.05",
             },
             {
                 "code": "12345",
@@ -79,19 +79,31 @@ class ProductSerializerTests(TestCase):
                 "code": "abcde",
                 "description": "Test Product",
                 "unit_price": "9.99",
-                "commission_rate": "0.5",
+                "commission_rate": "0.05",
             },
             {
                 "code": "12345",
                 "description": "Test Product",
                 "unit_price": "abc",
-                "commission_rate": "0.5",
+                "commission_rate": "0.05",
+            },
+            {
+                "code": "12345",
+                "description": "Test Product",
+                "unit_price": "-9.99",
+                "commission_rate": "0.05",
             },
             {
                 "code": "12345",
                 "description": "Test Product",
                 "unit_price": "9.99",
                 "commission_rate": "abc",
+            },
+            {
+                "code": "12345",
+                "description": "Test Product",
+                "unit_price": "9.99",
+                "commission_rate": "0.5",
             },
         ]
 
