@@ -25,7 +25,7 @@ class Sale(models.Model):
     products = models.ManyToManyField(
         Product,
         related_name="sales",
-        through="SaleProducts",
+        through="SaleProduct",
     )
 
     def __str__(self) -> str:
@@ -37,7 +37,7 @@ class Sale(models.Model):
         ordering = ["-id"]
 
 
-class SaleProducts(models.Model):
+class SaleProduct(models.Model):
     sale = models.ForeignKey(Sale, on_delete=models.PROTECT)
     product = models.ForeignKey(Product, on_delete=models.PROTECT)
     quantity = models.PositiveSmallIntegerField("Quantidade", default=1)

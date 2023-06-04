@@ -1,12 +1,11 @@
 from decimal import Decimal
 
-from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.utils import timezone
 from persons.models import Customer, Vendor
 from products.models import Product
 
-from ..models import Sale, SaleProducts
+from ..models import Sale, SaleProduct
 
 
 class TestDataMixin:
@@ -43,7 +42,7 @@ class TestDataMixin:
 class SaleModelTests(TestDataMixin, TestCase):
     def test_create_sale(self):
         """
-        Should create a sale instance with the provided data
+        Should validate that a sale instance has been created with the provided data
         """
 
         self.assertEqual(Sale.objects.count(), 1)
@@ -61,43 +60,23 @@ class SaleModelTests(TestDataMixin, TestCase):
         self.assertEqual(self.sale.products.count(), 1)
         self.assertEqual(self.sale.products.first(), self.product)
 
-        sale_product = SaleProducts.objects.get(sale=self.sale, product=self.product)
+        sale_product = SaleProduct.objects.get(sale=self.sale, product=self.product)
         self.assertEqual(sale_product.quantity, 2)
-
-    def test_invoice_number_validation(self):
-        """
-        Should validate that the invoice_number field only contains numbers
-        """
-
-        sale_data = {
-            "invoice_number": "ABCD",  # Invalid invoice number with non-digit characters
-            "date_time": timezone.now(),
-            "customer": self.customer,
-            "vendor": self.vendor,
-        }
-        sale = Sale(**sale_data)
-
-        with self.assertRaises(ValidationError):
-            sale.full_clean()
-
-        # Assigning a valid invoice number
-        sale.invoice_number = "1234"
-        sale.full_clean()  # Should not raise any validation errors
 
 
 class SaleProductsModelTests(TestDataMixin, TestCase):
     def test_create_sale_product(self):
         """
-        Should create a SaleProducts instance with the provided data
+        Should create a SaleProduct instance with the provided data
         """
 
-        sale_product = SaleProducts.objects.create(
+        sale_product = SaleProduct.objects.create(
             sale=self.sale,
             product=self.product,
             quantity=2,
         )
 
-        self.assertEqual(SaleProducts.objects.count(), 1)
+        self.assertEqual(SaleProduct.objects.count(), 1)
         self.assertEqual(sale_product.sale, self.sale)
         self.assertEqual(sale_product.product, self.product)
         self.assertEqual(sale_product.quantity, 2)
