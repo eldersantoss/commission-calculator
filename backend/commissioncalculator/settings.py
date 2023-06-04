@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "common",
     "persons",
     "products",
+    "sales",
 ]
 
 MIDDLEWARE = [
