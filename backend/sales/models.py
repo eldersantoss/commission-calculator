@@ -24,7 +24,7 @@ class Sale(models.Model):
     )
     products = models.ManyToManyField(
         Product,
-        related_name="sales",
+        related_name="sale_products",
         through="SaleProduct",
     )
 
