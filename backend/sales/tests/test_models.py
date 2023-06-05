@@ -1,42 +1,8 @@
-from decimal import Decimal
-
 from django.test import TestCase
-from django.utils import timezone
-from persons.models import Customer, Vendor
-from products.models import Product
+from model_mommy import mommy
 
 from ..models import Sale, SaleProduct
-
-
-class TestDataMixin:
-    def setUp(self):
-        self.customer_data = {
-            "name": "Test Customer",
-            "email": "testcustomer@email.com",
-            "phone": "84991000000",
-        }
-        self.vendor_data = {
-            "name": "Test Vendor",
-            "email": "testvendor@email.com",
-            "phone": "84991111111",
-        }
-        self.product_data = {
-            "code": "12345",
-            "description": "Test product 1",
-            "unit_price": Decimal("10.0"),
-            "commission_rate": Decimal("0.05"),
-        }
-        self.customer = Customer.objects.create(**self.customer_data)
-        self.vendor = Vendor.objects.create(**self.vendor_data)
-        self.product = Product.objects.create(**self.product_data)
-
-        self.sale_data = {
-            "invoice_number": "123456789",
-            "date_time": timezone.now(),
-            "customer": self.customer,
-            "vendor": self.vendor,
-        }
-        self.sale = Sale.objects.create(**self.sale_data)
+from .data import TestDataMixin
 
 
 class SaleModelTests(TestDataMixin, TestCase):
@@ -46,7 +12,7 @@ class SaleModelTests(TestDataMixin, TestCase):
         """
 
         self.assertEqual(Sale.objects.count(), 1)
-        self.assertEqual(self.sale.invoice_number, "123456789")
+        self.assertEqual(self.sale.invoice_number, self.invoice_number)
         self.assertEqual(self.sale.customer, self.customer)
         self.assertEqual(self.sale.vendor, self.vendor)
 
@@ -55,12 +21,13 @@ class SaleModelTests(TestDataMixin, TestCase):
         Should add products to the sale and retrieve them
         """
 
-        self.sale.products.add(self.product, through_defaults={"quantity": 2})
+        sale = mommy.make(Sale)
+        sale.products.add(self.products[0], through_defaults={"quantity": 2})
 
-        self.assertEqual(self.sale.products.count(), 1)
-        self.assertEqual(self.sale.products.first(), self.product)
+        self.assertEqual(sale.products.count(), 1)
+        self.assertEqual(sale.products.first(), self.products[0])
 
-        sale_product = SaleProduct.objects.get(sale=self.sale, product=self.product)
+        sale_product = SaleProduct.objects.get(sale=sale, product=self.products[0])
         self.assertEqual(sale_product.quantity, 2)
 
 
@@ -70,13 +37,15 @@ class SaleProductsModelTests(TestDataMixin, TestCase):
         Should create a SaleProduct instance with the provided data
         """
 
+        sale = mommy.make(Sale)
+
         sale_product = SaleProduct.objects.create(
-            sale=self.sale,
-            product=self.product,
+            sale=sale,
+            product=self.products[0],
             quantity=2,
         )
 
-        self.assertEqual(SaleProduct.objects.count(), 1)
-        self.assertEqual(sale_product.sale, self.sale)
-        self.assertEqual(sale_product.product, self.product)
+        self.assertEqual(SaleProduct.objects.filter(sale=sale).count(), 1)
+        self.assertEqual(sale_product.sale, sale)
+        self.assertEqual(sale_product.product, self.products[0])
         self.assertEqual(sale_product.quantity, 2)
