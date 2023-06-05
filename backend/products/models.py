@@ -3,6 +3,7 @@ from decimal import Decimal
 from common.validators import only_numbers_validator
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from rest_framework.reverse import reverse
 
 
 class Product(models.Model):
@@ -34,3 +35,6 @@ class Product(models.Model):
         verbose_name = "produto"
         verbose_name_plural = "produtos"
         ordering = ["-id"]
+
+    def get_absolute_url(self):
+        return reverse("product-detail", kwargs={"pk": self.pk})

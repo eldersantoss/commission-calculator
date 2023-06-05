@@ -1,5 +1,6 @@
 from django.core.validators import RegexValidator
 from django.db import models
+from rest_framework.reverse import reverse
 
 
 class Person(models.Model):
@@ -29,9 +30,15 @@ class Customer(Person):
         verbose_name_plural = "clientes"
         ordering = ["-id"]
 
+    def get_absolute_url(self):
+        return reverse("customer-detail", kwargs={"pk": self.pk})
+
 
 class Vendor(Person):
     class Meta:
         verbose_name = "vendedor"
         verbose_name_plural = "vendedores"
         ordering = ["-id"]
+
+    def get_absolute_url(self):
+        return reverse("vendor-detail", kwargs={"pk": self.pk})
