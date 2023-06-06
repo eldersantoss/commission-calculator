@@ -32,6 +32,30 @@ class Sale(models.Model):
         through="SaleProduct",
     )
 
+    def get_commission_rate_limit(self):
+        """
+        Return the commission rate limit for the weekday of this sale
+        """
+
+        commission_rate_limit, _ = CommissionRateLimit.objects.get_or_create(
+            weekday=self.date_time.weekday()
+        )
+        return commission_rate_limit
+
+    def get_total_commission_value(self) -> Decimal:
+        """
+        Return the accumulated commission value of all products in this sale
+        """
+
+        sale_products = SaleProduct.objects.filter(sale=self)
+        commission = sum(
+            [
+                sale_product.get_product_commission_value()
+                for sale_product in sale_products
+            ]
+        )
+        return commission
+
     def __str__(self) -> str:
         return f"{self.invoice_number}"
 
@@ -45,6 +69,35 @@ class SaleProduct(models.Model):
     sale = models.ForeignKey(Sale, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.PROTECT)
     quantity = models.PositiveSmallIntegerField("Quantidade", default=1)
+
+    def get_product_commission_value(self) -> Decimal:
+        """
+        Return the commission value for this product on this sale
+        """
+
+        weekday_commission_rate = self.get_commission_rate_for_weekday()
+
+        return self.product.unit_price * self.quantity * weekday_commission_rate
+
+    def get_commission_rate_for_weekday(self):
+        """
+        Return the commission rate for the weekday
+        """
+
+        commission_rate_limit = self.sale.get_commission_rate_limit()
+
+        if (
+            commission_rate_limit.min_value
+            <= self.product.commission_rate
+            <= commission_rate_limit.max_value
+        ):
+            return self.product.commission_rate
+
+        elif self.product.commission_rate < commission_rate_limit.min_value:
+            return commission_rate_limit.min_value
+
+        else:
+            return commission_rate_limit.max_value
 
 
 class CommissionRateLimit(models.Model):
