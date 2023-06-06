@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.core.validators import RegexValidator
 from django.db import models
 from rest_framework.reverse import reverse
@@ -42,3 +44,19 @@ class Vendor(Person):
 
     def get_absolute_url(self):
         return reverse("vendor-detail", kwargs={"pk": self.pk})
+
+    def get_commission_value_on_period(self, start: date, end: date):
+        """
+        Return the value of accumulated commission of this vendor on a period
+        """
+
+        sales = self.get_sales_on_period(start, end)
+        commission = sum([sale.get_total_commission_value() for sale in sales])
+        return commission
+
+    def get_sales_on_period(self, start: date, end: date):
+        """
+        Return the sales of this vendor on a period
+        """
+
+        return self.sales.filter(date_time__date__gte=start, date_time__date__lte=end)
