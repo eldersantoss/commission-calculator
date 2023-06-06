@@ -38,6 +38,6 @@ class Sale(models.Model):
 
 
 class SaleProduct(models.Model):
-    sale = models.ForeignKey(Sale, on_delete=models.PROTECT)
+    sale = models.ForeignKey(Sale, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.PROTECT)
     quantity = models.PositiveSmallIntegerField("Quantidade", default=1)
