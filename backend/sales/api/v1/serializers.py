@@ -60,4 +60,6 @@ class SaleSerializer(serializers.ModelSerializer):
         for product_data in products_data:
             SaleProduct.objects.create(sale=instance, **product_data)
 
+        instance.save()
+
         return instance
