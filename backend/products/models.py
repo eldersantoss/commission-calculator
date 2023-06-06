@@ -20,7 +20,7 @@ class Product(models.Model):
     )
     commission_rate = models.DecimalField(
         max_digits=4,
-        decimal_places=2,
+        decimal_places=3,
         default=0,
         validators=[
             MinValueValidator(Decimal("0")),

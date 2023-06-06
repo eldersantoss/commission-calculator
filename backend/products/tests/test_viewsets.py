@@ -13,7 +13,7 @@ class ProductsViewSetTests(APITestCase):
             "code": "12345",
             "description": "Test Product",
             "unit_price": "9.99",
-            "commission_rate": "0.03",
+            "commission_rate": "0.030",
         }
         self.instance = Product.objects.create(**self.data)
 
@@ -62,7 +62,7 @@ class ProductsViewSetTests(APITestCase):
             "code": "12346",
             "description": "New Product",
             "unit_price": "17.49",
-            "commission_rate": "0.05",
+            "commission_rate": "0.050",
         }
 
         response = self.client.post(url, data=new_instance_data)
