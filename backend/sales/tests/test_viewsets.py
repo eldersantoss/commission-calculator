@@ -5,9 +5,10 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase
 
+from common.tests.fixtures import TestDataMixin
+
 from ..api.v1.serializers import SaleProductSerializer, SaleSerializer
 from ..models import Sale
-from .data import TestDataMixin
 
 
 class SaleViewSetTests(TestDataMixin, APITestCase):
@@ -44,7 +45,7 @@ class SaleViewSetTests(TestDataMixin, APITestCase):
         self.assertEqual(response.data["invoice_number"], self.sale.invoice_number)
         self.assertEqual(
             timezone.now().fromisoformat(response.data["date_time"]),
-            timezone.now().fromisoformat(self.sale.date_time),
+            self.sale.date_time,
         )
         self.assertEqual(
             response.data["customer"],
