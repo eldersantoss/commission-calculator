@@ -1,11 +1,11 @@
 from decimal import Decimal
 
+from rest_framework.test import APIRequestFactory
 from django.utils import timezone
+
 from persons.models import Customer, Vendor
 from products.models import Product
-from rest_framework.test import APIRequestFactory
-
-from ..models import Sale, SaleProduct
+from sales.models import Sale, SaleProduct
 
 
 class TestDataMixin:
@@ -16,11 +16,15 @@ class TestDataMixin:
             "email": "testcustomer@email.com",
             "phone": "84991000000",
         }
+        cls.customer = Customer.objects.create(**cls.customer_data)
+
         cls.vendor_data = {
             "name": "Test Vendor",
             "email": "testvendor@email.com",
             "phone": "84991111111",
         }
+        cls.vendor = Vendor.objects.create(**cls.vendor_data)
+
         cls.products_data = [
             {
                 "code": "000001",
@@ -41,20 +45,17 @@ class TestDataMixin:
                 "commission_rate": Decimal("0.075"),
             },
         ]
+        cls.products = [Product.objects.create(**pd) for pd in cls.products_data]
 
-        cls.invoice_number = "0000000001"
-        cls.date_time = timezone.now().isoformat()
-        cls.customer = Customer.objects.create(**cls.customer_data)
-        cls.vendor = Vendor.objects.create(**cls.vendor_data)
+        date_time = timezone.now().astimezone(timezone.get_default_timezone())
         cls.sale_data = {
-            "invoice_number": cls.invoice_number,
-            "date_time": cls.date_time,
+            "invoice_number": "0000000001",
+            "date_time": date_time,
             "customer": cls.customer,
             "vendor": cls.vendor,
         }
         cls.sale = Sale.objects.create(**cls.sale_data)
 
-        cls.products = [Product.objects.create(**pd) for pd in cls.products_data]
         cls.sale.products.add(cls.products[0], through_defaults={"quantity": 1})
         cls.sale.products.add(cls.products[1], through_defaults={"quantity": 2})
         cls.sale.products.add(cls.products[2], through_defaults={"quantity": 3})

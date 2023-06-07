@@ -12,7 +12,7 @@ class ProductSerializerTests(TestCase):
             "code": "12345",
             "description": "Test Product",
             "unit_price": "9.99",
-            "commission_rate": "0.07",
+            "commission_rate": "0.070",
         }
 
     def test_serialization(self):

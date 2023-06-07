@@ -2,9 +2,10 @@ from django.test import TestCase
 from django.utils import timezone
 from model_mommy import mommy
 
+from common.tests.fixtures import TestDataMixin
+
 from ..api.v1.serializers import SaleProductSerializer, SaleSerializer
 from ..models import Sale, SaleProduct
-from .data import TestDataMixin
 
 
 class SaleProductSerializerTests(TestDataMixin, TestCase):
@@ -31,11 +32,12 @@ class SaleSerializerTests(TestDataMixin, TestCase):
         Serializer should create a serialized representation of the model instance with provided data
         """
 
-        sale_data = {
-            "invoice_number": self.invoice_number,
-            "date_time": self.date_time,
-            "customer": "http://testserver" + self.customer.get_absolute_url(),
-            "vendor": "http://testserver" + self.vendor.get_absolute_url(),
+        expected_serialized_sale_data = {
+            "invoice_number": self.sale_data["invoice_number"],
+            "date_time": self.sale_data["date_time"].isoformat(),
+            "customer": "http://testserver"
+            + self.sale_data["customer"].get_absolute_url(),
+            "vendor": "http://testserver" + self.sale_data["vendor"].get_absolute_url(),
             "products": [
                 {
                     "product": "http://testserver"
@@ -57,18 +59,19 @@ class SaleSerializerTests(TestDataMixin, TestCase):
 
         serializer = SaleSerializer(self.sale, context=self.serializer_context)
 
-        self.assertEqual(serializer.data, sale_data)
+        self.assertEqual(serializer.data, expected_serialized_sale_data)
 
     def test_valid_deserialization(self):
         """
         Serializer should be valid and create the model instance with provided data
         """
 
-        sale_data = {
-            "invoice_number": "0000000002",
-            "date_time": "2023-06-04T21:12:45.529818-03:00",
-            "customer": "http://testserver" + self.customer.get_absolute_url(),
-            "vendor": "http://testserver" + self.vendor.get_absolute_url(),
+        serialized_sale_data = {
+            "invoice_number": str(Sale.objects.count() + 1),
+            "date_time": self.sale_data["date_time"].isoformat(),
+            "customer": "http://testserver"
+            + self.sale_data["customer"].get_absolute_url(),
+            "vendor": "http://testserver" + self.sale_data["vendor"].get_absolute_url(),
             "products": [
                 {
                     "product": "http://testserver"
@@ -83,26 +86,26 @@ class SaleSerializerTests(TestDataMixin, TestCase):
             ],
         }
 
-        serializer = SaleSerializer(data=sale_data)
+        serializer = SaleSerializer(data=serialized_sale_data)
         self.assertTrue(serializer.is_valid())
 
         sale = serializer.save()
-        self.assertEqual(sale.invoice_number, sale_data["invoice_number"])
-        self.assertEqual(sale.date_time.isoformat(), sale_data["date_time"])
+        self.assertEqual(sale.invoice_number, serialized_sale_data["invoice_number"])
+        self.assertEqual(sale.date_time.isoformat(), serialized_sale_data["date_time"])
         self.assertEqual(
             "http://testserver" + sale.customer.get_absolute_url(),
-            sale_data["customer"],
+            serialized_sale_data["customer"],
         )
         self.assertEqual(
             "http://testserver" + sale.vendor.get_absolute_url(),
-            sale_data["vendor"],
+            serialized_sale_data["vendor"],
         )
 
         sale_products = SaleProduct.objects.filter(sale=sale)
         serializer = SaleProductSerializer(
             sale_products, many=True, context=self.serializer_context
         )
-        self.assertEqual(serializer.data, sale_data["products"])
+        self.assertEqual(serializer.data, serialized_sale_data["products"])
 
     def test_instance_update(self):
         """

@@ -12,3 +12,4 @@ class ProductAdmin(admin.ModelAdmin):
         "commission_rate",
     ]
     search_fields = ["code", "description"]
+    list_editable = ["unit_price", "commission_rate"]
