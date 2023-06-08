@@ -2,7 +2,7 @@ interface SubTitleProps {
   text: string
 }
 
-export default function SubTitle( { text }: SubTitleProps) {
+export default function Caption( { text }: SubTitleProps) {
   return (
     <h3 style={{
        fontSize: "24px",
