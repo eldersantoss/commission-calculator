@@ -9,7 +9,7 @@ export default function TopBar() {
   const { pageTitle, toggleSideBar } = useAppContext()
 
   return (
-    <div style={{
+    <header style={{
       position: "relative",
       width: "100vw",
       height: "87px",
@@ -23,7 +23,7 @@ export default function TopBar() {
             style={{cursor: "pointer", marginRight: "30px", fontWeight: "bolder"}}
             onClick={toggleSideBar}
           >
-            <IconMenu2/>
+            <IconMenu2 stroke={"3"}/>
           </span>
           <span>
             <Image src="/logo.svg" width={202} height={58} alt="Logo" priority/>
@@ -35,6 +35,6 @@ export default function TopBar() {
         {pageTitle}
       </h1>
 
-    </div>
+    </header>
   )
 }
