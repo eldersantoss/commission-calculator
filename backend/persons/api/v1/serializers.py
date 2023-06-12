@@ -3,16 +3,16 @@ from rest_framework import serializers
 from ...models import Customer, Vendor
 
 
-class CustomerSerializer(serializers.ModelSerializer):
+class CustomerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Customer
-        fields = ("name", "email", "phone")
+        fields = ("id", "url", "name", "email", "phone")
 
 
-class VendorSerializer(serializers.ModelSerializer):
+class VendorSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Vendor
-        fields = ("name", "email", "phone")
+        fields = ("id", "url", "name", "email", "phone")
 
 
 class VendorCommissionSerializer(serializers.ModelSerializer):

@@ -32,6 +32,14 @@ class Sale(models.Model):
         through="SaleProduct",
     )
 
+    def get_total_value(self):
+        """
+        Return the total value of the sale
+        """
+
+        sale_products = SaleProduct.objects.filter(sale=self)
+        return sum([sp.get_total_value() for sp in sale_products])
+
     def get_commission_rate_limit(self):
         """
         Return the commission rate limit for the weekday of this sale
@@ -66,9 +74,24 @@ class Sale(models.Model):
 
 
 class SaleProduct(models.Model):
-    sale = models.ForeignKey(Sale, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.PROTECT)
+    sale = models.ForeignKey(
+        Sale,
+        on_delete=models.CASCADE,
+        verbose_name="venda",
+    )
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.PROTECT,
+        verbose_name="produto",
+    )
     quantity = models.PositiveSmallIntegerField("Quantidade", default=1)
+
+    def get_total_value(self):
+        """
+        Return the total value of this product in the sale
+        """
+
+        return self.product.unit_price * self.quantity
 
     def get_product_commission_value(self) -> Decimal:
         """
@@ -98,6 +121,11 @@ class SaleProduct(models.Model):
 
         else:
             return commission_rate_limit.max_value
+
+    class Meta:
+        verbose_name = "produtos e vendas"
+        verbose_name_plural = "produtos e vendas"
+        ordering = ["-id"]
 
 
 class CommissionRateLimit(models.Model):

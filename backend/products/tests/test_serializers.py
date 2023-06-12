@@ -1,6 +1,7 @@
 from decimal import Decimal
 
 from django.test import TestCase
+from rest_framework.test import APIRequestFactory
 
 from ..api.v1.serializers import ProductSerializer
 from ..models import Product
@@ -14,23 +15,40 @@ class ProductSerializerTests(TestCase):
             "unit_price": "9.99",
             "commission_rate": "0.070",
         }
+        self.serializer_context = {"request": APIRequestFactory().get("/")}
 
     def test_serialization(self):
         """
         Serializer should create a serialized representation of the model instance with provided data
         """
 
-        instance = Product.objects.create(**self.data)
+        data = {
+            "code": "12345",
+            "description": "Test Product",
+            "unit_price": "9.99",
+            "commission_rate": "0.070",
+        }
+        instance = Product.objects.create(**data)
 
-        serializer = ProductSerializer(instance)
-        self.assertEqual(serializer.data, self.data)
+        serializer = ProductSerializer(instance, context=self.serializer_context)
+
+        self.assertEqual(serializer.data["code"], data["code"])
+        self.assertEqual(serializer.data["description"], data["description"])
+        self.assertEqual(serializer.data["unit_price"], data["unit_price"])
+        self.assertEqual(
+            Decimal(serializer.data["commission_rate"]),
+            Decimal(data["commission_rate"]),
+        )
+        self.assertEqual(
+            serializer.data["url"], "http://testserver" + instance.get_absolute_url()
+        )
 
     def test_valid_deserialization(self):
         """
         Serializer should be valid and create a new model instance with provided data
         """
 
-        serializer = ProductSerializer(data=self.data)
+        serializer = ProductSerializer(data=self.data, context=self.serializer_context)
         self.assertTrue(serializer.is_valid())
 
         instance = serializer.save()
@@ -108,5 +126,5 @@ class ProductSerializerTests(TestCase):
         ]
 
         for data in invalid_data:
-            serializer = ProductSerializer(data=data)
+            serializer = ProductSerializer(data=data, context=self.serializer_context)
             self.assertFalse(serializer.is_valid())

@@ -1,7 +1,8 @@
+from decimal import Decimal
 from model_mommy import mommy
 from rest_framework import status
 from rest_framework.reverse import reverse
-from rest_framework.test import APITestCase
+from rest_framework.test import APITestCase, APIRequestFactory
 
 from ..api.v1.serializers import ProductSerializer
 from ..models import Product
@@ -16,6 +17,7 @@ class ProductsViewSetTests(APITestCase):
             "commission_rate": "0.030",
         }
         self.instance = Product.objects.create(**self.data)
+        self.serializer_context = {"request": APIRequestFactory().get("/")}
 
     def test_list_instances(self):
         """
@@ -24,7 +26,9 @@ class ProductsViewSetTests(APITestCase):
 
         mommy.make(Product, 5)
         instances = Product.objects.all()
-        serializer = ProductSerializer(instances, many=True)
+        serializer = ProductSerializer(
+            instances, many=True, context=self.serializer_context
+        )
 
         url = reverse("product-list")
 
@@ -70,8 +74,20 @@ class ProductsViewSetTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         instance = Product.objects.get(code=new_instance_data["code"])
-        serializer = ProductSerializer(instance)
-        self.assertEqual(serializer.data, new_instance_data)
+        serializer = ProductSerializer(instance, context=self.serializer_context)
+
+        self.assertEqual(serializer.data["code"], new_instance_data["code"])
+        self.assertEqual(
+            serializer.data["description"], new_instance_data["description"]
+        )
+        self.assertEqual(serializer.data["unit_price"], new_instance_data["unit_price"])
+        self.assertEqual(
+            Decimal(serializer.data["commission_rate"]),
+            Decimal(new_instance_data["commission_rate"]),
+        )
+        self.assertEqual(
+            serializer.data["url"], "http://testserver" + instance.get_absolute_url()
+        )
 
     def test_instance_update(self):
         """
@@ -92,7 +108,7 @@ class ProductsViewSetTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         instance = Product.objects.get(id=self.instance.id)
-        serializer = ProductSerializer(instance)
+        serializer = ProductSerializer(instance, context=self.serializer_context)
         self.assertEqual(response.data, serializer.data)
 
     def test_instance_delete(self):

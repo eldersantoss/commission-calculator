@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
     "rest_framework",
+    "corsheaders",
     "common",
     "persons",
     "products",
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -150,3 +152,11 @@ STATIC_URL = "static/"
 STATIC_ROOT = str(BASE_DIR / "static")
 MEDIA_URL = "media/"
 MEDIA_ROOT = str(BASE_DIR / "media")
+
+
+# CORS
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]

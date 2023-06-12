@@ -1,10 +1,15 @@
 from django.test import TestCase
+from rest_framework.test import APIRequestFactory
 
 from ..api.v1.serializers import CustomerSerializer, VendorSerializer
 from ..models import Customer, Vendor
 
 
 class PersonSerializerTestsMixin:
+    @classmethod
+    def setUpClass(cls):
+        cls.serializer_context = {"request": APIRequestFactory().get("/")}
+
     def test_serialization(self):
         """
         Should create a serialized representation of model instance with provided data
@@ -17,9 +22,14 @@ class PersonSerializerTestsMixin:
         }
         instance = self.model.objects.create(**data)
 
-        serializer = self.serializer_class(instance)
+        serializer = self.serializer_class(instance, context=self.serializer_context)
 
-        self.assertEqual(serializer.data, data)
+        self.assertEqual(serializer.data["email"], data["email"])
+        self.assertEqual(serializer.data["name"], data["name"])
+        self.assertEqual(serializer.data["phone"], data["phone"])
+        self.assertEqual(
+            serializer.data["url"], "http://testserver" + instance.get_absolute_url()
+        )
 
     def test_valid_deserialization(self):
         """
@@ -32,7 +42,7 @@ class PersonSerializerTestsMixin:
             "phone": "5584900000000",
         }
 
-        serializer = self.serializer_class(data=data)
+        serializer = self.serializer_class(data=data, context=self.serializer_context)
 
         self.assertTrue(serializer.is_valid())
 
@@ -53,7 +63,7 @@ class PersonSerializerTestsMixin:
             "phone": "very_long_invalid_phone_with",
         }
 
-        serializer = self.serializer_class(data=data)
+        serializer = self.serializer_class(data=data, context=self.serializer_context)
 
         self.assertFalse(serializer.is_valid())
 
@@ -66,6 +76,10 @@ class PersonSerializerTestsMixin:
         self.assertIn("phone", serializer.errors)
         self.assertEqual(serializer.errors["phone"][0].code, "invalid")
         self.assertEqual(serializer.errors["phone"][1].code, "max_length")
+
+    @classmethod
+    def tearDownClass(cls):
+        pass
 
 
 class VendorSerializerTestCase(PersonSerializerTestsMixin, TestCase):

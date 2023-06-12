@@ -72,7 +72,6 @@ class SaleViewSetTests(TestDataMixin, APITestCase):
         url = reverse("sale-list")
 
         new_instance_data = {
-            "invoice_number": str(Sale.objects.count() + 1),
             "date_time": timezone.now(),
             "customer": "http://testserver" + self.customer.get_absolute_url(),
             "vendor": "http://testserver" + self.vendor.get_absolute_url(),
@@ -98,11 +97,7 @@ class SaleViewSetTests(TestDataMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        self.assertTrue(
-            Sale.objects.filter(
-                invoice_number=new_instance_data["invoice_number"]
-            ).exists()
-        )
+        self.assertTrue(Sale.objects.filter(id=response.data["id"]).exists())
 
     def test_instance_update(self):
         """
