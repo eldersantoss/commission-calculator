@@ -1,13 +1,17 @@
 from model_mommy import mommy
 from rest_framework import status
 from rest_framework.reverse import reverse
-from rest_framework.test import APITestCase
+from rest_framework.test import APITestCase, APIRequestFactory
 
 from ..api.v1.serializers import CustomerSerializer, VendorSerializer
 from ..models import Customer, Vendor
 
 
 class PersonViewSetTestsMixin:
+    @classmethod
+    def setUpClass(cls):
+        cls.serializer_context = {"request": APIRequestFactory().get("/")}
+
     def setUp(self) -> None:
         self.data = {
             "name": "Test Person",
@@ -23,7 +27,9 @@ class PersonViewSetTestsMixin:
 
         mommy.make(self.model, 5)
         instances = self.model.objects.all()
-        serializer = self.serializer_class(instances, many=True)
+        serializer = self.serializer_class(
+            instances, many=True, context=self.serializer_context
+        )
 
         url = reverse(f"{self.url_basename}-list")
 
@@ -64,8 +70,14 @@ class PersonViewSetTestsMixin:
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         instance = self.model.objects.get(email=new_instance_data["email"])
-        serializer = self.serializer_class(instance)
-        self.assertEqual(serializer.data, new_instance_data)
+        serializer = self.serializer_class(instance, context=self.serializer_context)
+
+        self.assertEqual(serializer.data["email"], new_instance_data["email"])
+        self.assertEqual(serializer.data["name"], new_instance_data["name"])
+        self.assertEqual(serializer.data["phone"], new_instance_data["phone"])
+        self.assertEqual(
+            serializer.data["url"], "http://testserver" + instance.get_absolute_url()
+        )
 
     def test_instance_update(self):
         """
@@ -85,7 +97,7 @@ class PersonViewSetTestsMixin:
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         instance = self.model.objects.get(id=self.instance.id)
-        serializer = self.serializer_class(instance)
+        serializer = self.serializer_class(instance, context=self.serializer_context)
         self.assertEqual(response.data, serializer.data)
 
     def test_instance_delete(self):
@@ -99,6 +111,10 @@ class PersonViewSetTestsMixin:
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(self.model.objects.filter(id=self.instance.id).exists())
+
+    @classmethod
+    def tearDownClass(cls):
+        pass
 
 
 class CustomerViewSetTests(PersonViewSetTestsMixin, APITestCase):
