@@ -14,7 +14,8 @@ export default function TopBar() {
       width: "100vw",
       height: "87px",
       backgroundColor: "#F0F0F0",
-      color: "#00585E"
+      color: "#00585E",
+      boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.12)"
     }}>
 
       <span style={{ position: "absolute", top: "16px", left: "50px"}}>
