@@ -1,0 +1,13 @@
+.mainTable {
+  width: 100%;
+  text-align: center;
+  border-collapse: collapse;
+}
+
+.mainTable tr {
+  border-bottom: 1px solid #888888;
+}
+
+.mainTable td {
+  padding: 15px;
+}
