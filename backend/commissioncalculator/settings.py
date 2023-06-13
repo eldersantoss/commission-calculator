@@ -1,4 +1,3 @@
-from email.policy import default
 from pathlib import Path
 
 from decouple import Csv, config
@@ -156,4 +155,8 @@ MEDIA_ROOT = str(BASE_DIR / "media")
 
 # CORS
 
-CORS_ALLOWED_ORIGINS = config("CORS_ALLOWED_ORIGINS", cast=Csv())
+CORS_ALLOWED_ORIGINS = config(
+    "CORS_ALLOWED_ORIGINS",
+    default="http://localhost:3000,http://127.0.0.1:3000",
+    cast=Csv(),
+)
