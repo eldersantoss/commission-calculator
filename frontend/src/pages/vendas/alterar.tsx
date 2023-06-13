@@ -115,6 +115,7 @@ export default function CreateEditSalePage() {
       method = "PUT";
       messagePopupContent = "VENDA ALTERADA COM SUCESSO!";
     } else {
+      url += "/";
       method = "POST";
       messagePopupContent = "VENDA REALIZADA COM SUCESSO!";
     }
