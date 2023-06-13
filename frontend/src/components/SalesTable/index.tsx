@@ -78,7 +78,7 @@ export default function SaleTable() {
                 currency: "BRL",
               })}
             </td>
-            <td style={{ display: "flex" }}>
+            <td style={{ display: "flex", justifyContent: "center" }}>
               <OptionButton action={() => toggleProductTable(index)}>
                 {index === tableIndexToToggle ? "Fechar" : "Ver itens"}
               </OptionButton>
