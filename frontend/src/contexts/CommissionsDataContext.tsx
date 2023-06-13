@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction, createContext, useState } from "react";
+import settings from "../railway/config";
 
 interface CommisionsDataContextProps {
   startPeriod: string;
@@ -25,7 +26,7 @@ export function CommissionsDataProvider({ children }: any) {
 
   function fetchCommissionsData() {
     const url = new URL(
-      `${process.env.API_URL}/api/v1/persons/vendors/commissions/`
+      `${settings.API_URL}/api/v1/persons/vendors/commissions/`
     );
     url.searchParams.append("start_period", startPeriod);
     url.searchParams.append("end_period", endPeriod);

@@ -50,7 +50,6 @@ export default function CommissionsTable() {
     const totalCommissionValue = data.reduce((acc, cur) => {
       return acc + cur.commission_value;
     }, 0);
-    console.log(totalCommissionValue);
     return (
       <tr style={{ fontWeight: "500" }}>
         <td colSpan={3} style={{ textAlign: "left", paddingLeft: "35px" }}>

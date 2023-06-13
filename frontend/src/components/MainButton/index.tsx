@@ -12,8 +12,6 @@ export default function MainButton({
   action,
   disabled,
 }: MainButtonProps) {
-  console.log("CRIANDO BOTÃO:", disabled ? "DESABILITADO" : "HABILITDO");
-
   const [buttonBackgroundColor, setButtonBackgroundColor] = useState(
     disabled ? "#BBD3D5" : "#00585E"
   );
@@ -23,12 +21,10 @@ export default function MainButton({
   }, [disabled]);
 
   const handleMouseOver = () => {
-    console.log("BOTAO DESATIVADO?:", disabled);
     setButtonBackgroundColor(disabled ? "#BBD3D5" : "#067f87");
   };
 
   const handleMouseOut = () => {
-    console.log("BOTAO DESATIVADO?:", disabled);
     setButtonBackgroundColor(disabled ? "#BBD3D5" : "#00585E");
   };
 

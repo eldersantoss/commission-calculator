@@ -19,8 +19,6 @@ export default function SalesPage() {
     if (pageTitle !== "Vendas") setPageTitle("Vendas");
   }, [pageTitle, setPageTitle]);
 
-  console.log("RENDERIZANDO TELA DE VENDAS...");
-
   return (
     <div>
       <TopBar />

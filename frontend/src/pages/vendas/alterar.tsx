@@ -150,13 +150,7 @@ export default function CreateEditSalePage() {
         }
       })
       .catch((error) => console.error(error));
-
-    selectedSale
-      ? console.log("EDITANDO VENDA COM OS DADOS:", saleData)
-      : console.log("CRIANDO VENDA COM OS DADOS:", saleData);
   }
-
-  console.log("RENDERIZANDO PÁGINA DE ALTERAÇÃO E CRIAÇÃO DE VENDAS...");
 
   return (
     <div>
@@ -242,8 +236,6 @@ function loadSaleData(
   customersData: Person[],
   setCustomerSelectedOption: Dispatch<SetStateAction<Option>>
 ) {
-  console.log("CARREGANDO DADOS DA VENDA SELECIONADA NA PÁGINA");
-  console.log(selectedSale);
   loadSaleProductsTable(selectedSale, productsData, setOnTableSaleProducts);
   loadTimeStampInputValue(selectedSale.date_time, setTimeStampValue);
   loadPersonInput(selectedSale.vendor, vendorsData, setVendorSelectedOption);

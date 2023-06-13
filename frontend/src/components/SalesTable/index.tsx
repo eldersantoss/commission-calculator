@@ -40,7 +40,6 @@ export default function SaleTable() {
   ];
 
   useEffect(() => {
-    console.log("BUSCANDO DADOS DA TABELA DE VENDAS...");
     fetchSalesData();
   }, [fetchSalesData]);
 
@@ -51,8 +50,6 @@ export default function SaleTable() {
   }, [fetchProductsData, productsData]);
 
   function renderTable(headers: string[], data: any[]) {
-    console.log(productsData);
-
     return (
       <div style={{ flexGrow: "1", width: "100%" }}>
         <table className={styles.mainTable}>
@@ -111,7 +108,6 @@ export default function SaleTable() {
   }
 
   function toggleProductTable(tableIndex: number) {
-    console.log(`Mostrando itens da linha ${tableIndex + 1}...`);
     if (tableIndex === tableIndexToToggle) {
       setTableIndexToToggle(-1);
     } else {
@@ -133,19 +129,14 @@ export default function SaleTable() {
   }, [selectedSale, router]);
 
   function deleteSaleAction(sale: Sale) {
-    fetch(sale.url, { method: "DELETE" })
-      .then((response) => {
-        if (response.ok) {
-          setDisplayedMessagePopup("VENDA REMOVIDA COM SUCESSO!");
-          setSalesData(salesData.filter((currSale) => currSale != sale));
-        } else {
-          console.error("Ocorreu um erro ao excluir o item");
-        }
-      })
-      .catch((error) => console.error(error));
+    fetch(sale.url, { method: "DELETE" }).then((response) => {
+      if (response.ok) {
+        setDisplayedMessagePopup("VENDA REMOVIDA COM SUCESSO!");
+        setSalesData(salesData.filter((currSale) => currSale != sale));
+      } else {
+      }
+    });
   }
-
-  console.log("RENDERIZANDO TABELA DE VENDAS...");
 
   return (
     <div

@@ -39,7 +39,6 @@ export default function SaleForm({
   const [customerOptions, setCustomerOptions] = useState<Option[]>([]);
 
   useEffect(() => {
-    console.log("CARREGANDO DADOS DO FORMULARIO DE VENDA...");
     if (!vendorsData.length && !customersData.length) {
       fetchVendorsData();
       fetchCustomersData();
