@@ -5,7 +5,7 @@ import {
   useState,
   useCallback,
 } from "react";
-import settings from "../railway/config";
+import settings from "@/railway/config";
 
 export interface Product {
   code: number;

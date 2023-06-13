@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, createContext, useState } from "react";
-import settings from "../railway/config";
+import settings from "@/railway/config";
 
 interface CommisionsDataContextProps {
   startPeriod: string;
