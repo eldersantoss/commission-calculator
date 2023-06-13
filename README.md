@@ -56,9 +56,9 @@ payload = {
 response = requests.post(url, json=payload)
 
 
-# Atualização de vendedor (alterando nome)
+# Atualização de vendedor (alterando nome do vendedor com id = 1)
 
-url = "http://localhost:8000/api/v1/vendors/"
+url = "http://localhost:8000/api/v1/vendors/1/"
 payload = {
   "name": "New Name Vendor",
   "email": "testvendor@email.com",
@@ -91,9 +91,9 @@ payload = {
 response = requests.post(url, json=payload)
 
 
-# Atualização de produto (alterando taxa de comissão)
+# Atualização de produto (alterando taxa de comissão do produto com id = 3)
 
-url = "http://localhost:8000/api/v1/products/"
+url = "http://localhost:8000/api/v1/products/3/"
 payload = {
     "code": "12346",
     "description": "New Product",
@@ -120,15 +120,15 @@ response = requests.put(url, json=payload)
 url = "http://localhost:8000/api/v1/sales/"
 payload = {
     "date_time": "2023-06-13T08:24:42-03:00",
-    "customer": "http://commission-calculator-api.up.railway.app/api/v1/persons/customers/1/",
-    "vendor": "http://commission-calculator-api.up.railway.app/api/v1/persons/vendors/2/",
+    "customer": "http://localhost:8000/api/v1/persons/customers/1/",
+    "vendor": "http://localhost:8000/api/v1/persons/vendors/2/",
     "products": [
         {
-            "product": "http://commission-calculator-api.up.railway.app/api/v1/products/3/",
+            "product": "http://localhost:8000/api/v1/products/3/",
             "quantity": 3
         },
         {
-            "product": "http://commission-calculator-api.up.railway.app/api/v1/products/3/",
+            "product": "http://localhost:8000/api/v1/products/3/",
             "quantity": 2
         }
     ]
@@ -136,16 +136,16 @@ payload = {
 response = requests.post(url, json=payload)
 
 
-# Atualização de venda (removendo primeiro produto)
+# Atualização de venda (removendo primeiro produto da venda com id = 1)
 
-url = "http://localhost:8000/api/v1/sales/"
+url = "http://localhost:8000/api/v1/sales/1/"
 payload = {
     "date_time": "2023-06-13T08:24:42-03:00",
-    "customer": "http://commission-calculator-api.up.railway.app/api/v1/persons/customers/1/",
-    "vendor": "http://commission-calculator-api.up.railway.app/api/v1/persons/vendors/2/",
+    "customer": "http://localhost:8000/api/v1/persons/customers/1/",
+    "vendor": "http://localhost:8000/api/v1/persons/vendors/2/",
     "products": [
         {
-            "product": "http://commission-calculator-api.up.railway.app/api/v1/products/3/",
+            "product": "http://localhost:8000/api/v1/products/3/",
             "quantity": 2
         }
     ]
