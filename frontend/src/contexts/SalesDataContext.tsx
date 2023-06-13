@@ -80,22 +80,22 @@ export function SalesDataProvider({ children }: any) {
   const [selectedSale, setSelectedSale] = useState<Sale | null>(null);
 
   const fetchSalesData = useCallback(
-    () => fetchResourceData("sales/", setSalesData)(),
+    () => fetchResourceData("/sales/", setSalesData)(),
     []
   );
 
   const fetchVendorsData = useCallback(
-    () => fetchResourceData("persons/vendors/", setVendorsData)(),
+    () => fetchResourceData("/persons/vendors/", setVendorsData)(),
     []
   );
 
   const fetchCustomersData = useCallback(
-    () => fetchResourceData("persons/customers/", setCustomerData)(),
+    () => fetchResourceData("/persons/customers/", setCustomerData)(),
     []
   );
 
   const fetchProductsData = useCallback(
-    () => fetchResourceData("products/", setProductsData)(),
+    () => fetchResourceData("/products/", setProductsData)(),
     []
   );
 
@@ -104,7 +104,7 @@ export function SalesDataProvider({ children }: any) {
     setResource: (value: any[]) => void
   ) {
     return () => {
-      const url = new URL(`${settings.API_URL}/api/v1/${resource}/`);
+      const url = new URL(`${settings.API_URL}/api/v1${resource}`);
       fetch(url)
         .then((response) => response.json())
         .then((data) => setResource(data?.results ?? []))

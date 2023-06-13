@@ -106,12 +106,12 @@ export default function CreateEditSalePage() {
     onTableSaleProducts: SaleProduct[],
     selectedSale: Sale | null
   ) {
-    let url = `${process.env.API_URL}/api/v1/sales/`;
+    let url = `${process.env.API_URL}/api/v1/sales`;
     let method = "";
     let messagePopupContent = "";
 
     if (selectedSale) {
-      url += `${selectedSale.id}/`;
+      url += `/${selectedSale.id}/`;
       method = "PUT";
       messagePopupContent = "VENDA ALTERADA COM SUCESSO!";
     } else {
