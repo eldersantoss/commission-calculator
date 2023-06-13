@@ -1,4 +1,7 @@
 from decimal import Decimal
+from unittest.mock import PropertyMock, patch
+
+from django.utils import timezone
 
 from django.core.exceptions import ValidationError
 from django.test import TestCase
@@ -76,11 +79,16 @@ class SaleProductsModelTests(TestDataMixin, TestCase):
 
         self.assertEqual(commission, 0.5)
 
-    def test_get_product_commission_value_with_custom_commission_rate_limits(self):
+    @patch("sales.models.Sale.date_time", new_callable=PropertyMock)
+    def test_get_product_commission_value_with_custom_commission_rate_limits(
+        self, mock_date_time
+    ):
         """
-        Should pass if the correct value for product commission is calculed
+        Should pass if the correct value for product commission is calculated
         with custom limits for the commission rates
         """
+
+        mock_date_time.return_value = timezone.now()
 
         sale_product = SaleProduct.objects.get(sale=self.sale, product=self.products[0])
 
