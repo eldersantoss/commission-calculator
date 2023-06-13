@@ -131,7 +131,7 @@ export default function SaleTable() {
   function deleteSaleAction(sale: Sale) {
     console.log(`DELETANDO VENDA ${sale.url}...`);
 
-    fetch(sale.url, { method: "DELETE" })
+    fetch(sale.url.replace("http", "https"), { method: "DELETE" })
       .then((response) => {
         if (response.ok) {
           setDisplayedMessagePopup("VENDA REMOVIDA COM SUCESSO!");
