@@ -25,9 +25,7 @@ export function CommissionsDataProvider({ children }: any) {
 
   function fetchCommissionsData() {
     const url = new URL(
-      `${
-        process.env.API_URL || "http://localhost:8000"
-      }/api/v1/persons/vendors/commissions/`
+      `${process.env.API_URL}/api/v1/persons/vendors/commissions/`
     );
     url.searchParams.append("start_period", startPeriod);
     url.searchParams.append("end_period", endPeriod);

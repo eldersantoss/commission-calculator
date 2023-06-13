@@ -103,9 +103,7 @@ export function SalesDataProvider({ children }: any) {
     setResource: (value: any[]) => void
   ) {
     return () => {
-      const url = new URL(
-        `${process.env.API_URL || "http://localhost:8000"}/api/v1/${resource}`
-      );
+      const url = new URL(`${process.env.API_URL}/api/v1/${resource}/`);
       fetch(url)
         .then((response) => response.json())
         .then((data) => setResource(data?.results ?? []))
