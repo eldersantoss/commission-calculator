@@ -129,13 +129,18 @@ export default function SaleTable() {
   }, [selectedSale, router]);
 
   function deleteSaleAction(sale: Sale) {
-    fetch(sale.url, { method: "DELETE" }).then((response) => {
-      if (response.ok) {
-        setDisplayedMessagePopup("VENDA REMOVIDA COM SUCESSO!");
-        setSalesData(salesData.filter((currSale) => currSale != sale));
-      } else {
-      }
-    });
+    console.log(`DELETANDO VENDA ${sale.url}...`);
+
+    fetch(sale.url, { method: "DELETE" })
+      .then((response) => {
+        if (response.ok) {
+          setDisplayedMessagePopup("VENDA REMOVIDA COM SUCESSO!");
+          setSalesData(salesData.filter((currSale) => currSale != sale));
+        } else {
+          console.error("Erro ao deletar venda", response);
+        }
+      })
+      .catch((error) => console.error(error));
   }
 
   return (
