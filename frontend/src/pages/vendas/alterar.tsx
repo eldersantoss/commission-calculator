@@ -106,7 +106,7 @@ export default function CreateEditSalePage() {
     onTableSaleProducts: SaleProduct[],
     selectedSale: Sale | null
   ) {
-    let url = "http://localhost:8000/api/v1/sales/";
+    let url = `${process.env.API_URL || "http://localhost:8000"}/api/v1/sales`;
     let method = "";
     let messagePopupContent = "";
 

@@ -1,13 +1,12 @@
-import {Dispatch, SetStateAction, createContext, useState} from "react"
-
+import { Dispatch, SetStateAction, createContext, useState } from "react";
 
 interface CommisionsDataContextProps {
-  startPeriod: string
-  setStartPeriod: Dispatch<SetStateAction<string>>
-  endPeriod: string
-  setEndPeriod: Dispatch<SetStateAction<string>>
-  commissionsData: []
-  fetchCommissionsData: () => void
+  startPeriod: string;
+  setStartPeriod: Dispatch<SetStateAction<string>>;
+  endPeriod: string;
+  setEndPeriod: Dispatch<SetStateAction<string>>;
+  commissionsData: [];
+  fetchCommissionsData: () => void;
 }
 
 export const CommisionsDataContext = createContext<CommisionsDataContextProps>({
@@ -16,24 +15,27 @@ export const CommisionsDataContext = createContext<CommisionsDataContextProps>({
   endPeriod: "",
   setEndPeriod: () => {},
   commissionsData: [],
-  fetchCommissionsData: () => {}
-})
+  fetchCommissionsData: () => {},
+});
 
 export function CommissionsDataProvider({ children }: any) {
-
-  const [ startPeriod, setStartPeriod ] = useState<string>("")
-  const [ endPeriod, setEndPeriod ] = useState<string>("")
-  const [ commissionsData, setCommissionsData ] = useState<[]>([])
+  const [startPeriod, setStartPeriod] = useState<string>("");
+  const [endPeriod, setEndPeriod] = useState<string>("");
+  const [commissionsData, setCommissionsData] = useState<[]>([]);
 
   function fetchCommissionsData() {
-    const url = new URL('http://localhost:8000/api/v1/persons/vendors/commissions/');
-    url.searchParams.append('start_period', startPeriod);
-    url.searchParams.append('end_period', endPeriod);
+    const url = new URL(
+      `${
+        process.env.API_URL || "http://localhost:8000"
+      }/api/v1/persons/vendors/commissions/`
+    );
+    url.searchParams.append("start_period", startPeriod);
+    url.searchParams.append("end_period", endPeriod);
 
     fetch(url)
-      .then(response => response.json())
-      .then(data => setCommissionsData(data?.results ?? []))
-      .catch(error => console.error(error));
+      .then((response) => response.json())
+      .then((data) => setCommissionsData(data?.results ?? []))
+      .catch((error) => console.error(error));
   }
 
   const values = {
@@ -43,11 +45,11 @@ export function CommissionsDataProvider({ children }: any) {
     setEndPeriod,
     commissionsData,
     fetchCommissionsData,
-  }
+  };
 
   return (
     <CommisionsDataContext.Provider value={values}>
       {children}
     </CommisionsDataContext.Provider>
-  )
+  );
 }
