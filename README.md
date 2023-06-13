@@ -7,6 +7,7 @@
 ## Sumário 📚
 
 - [Sumário 📚](#sumário-)
+- [**Acessando a Aplicação 🌍**](#acessando-a-aplicação-)
 - [**Endpoints da API 💡**](#endpoints-da-api-)
   - [**Vendedores e Clientes**](#vendedores-e-clientes)
     - [Exemplos](#exemplos)
@@ -24,7 +25,19 @@
 - [**Contribuindo 🤝**](#contribuindo-)
 - [**Licença 📝**](#licença-)
 
+## **Acessando a Aplicação 🌍**
+
+O frontend está hospedado nos servidores da vercel e pode ser acessado em https://commission-calculator-psi.vercel.app/.
+
 ## **Endpoints da API 💡**
+
+A API está hospedada nos servidores da Railway e pode ser acessada nos links abaixo:
+
+- Painel admin: https://commission-calculator-api.up.railway.app/admin
+- API root: https://commission-calculator-api.up.railway.app/
+
+Para obter os dados dos recursos, acesse a url da API root concatenando com algum dos seguintes paths:
+
 ### **Vendedores e Clientes**
 
 - `api/v1/persons/vendors/`

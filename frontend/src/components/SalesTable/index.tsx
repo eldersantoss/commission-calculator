@@ -129,8 +129,6 @@ export default function SaleTable() {
   }, [selectedSale, router]);
 
   function deleteSaleAction(sale: Sale) {
-    console.log(`DELETANDO VENDA ${sale.url}...`);
-
     fetch(sale.url.replace("http", "https"), { method: "DELETE" })
       .then((response) => {
         if (response.ok) {
