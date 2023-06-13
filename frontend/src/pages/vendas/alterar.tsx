@@ -21,7 +21,6 @@ import {
 import SaleResume from "@/components/SaleResume";
 import { parse, formatISO, format } from "date-fns";
 import { Option } from "@/components/SelectInput";
-import settings from "@/railway/config";
 
 export default function CreateEditSalePage() {
   const { setPageTitle, openSideBar, setDisplayedMessagePopup } =
@@ -107,7 +106,7 @@ export default function CreateEditSalePage() {
     onTableSaleProducts: SaleProduct[],
     selectedSale: Sale | null
   ) {
-    let url = `${settings.API_URL}/api/v1/sales`;
+    let url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/sales`;
     let method = "";
     let messagePopupContent = "";
 

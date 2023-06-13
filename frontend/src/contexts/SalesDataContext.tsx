@@ -5,7 +5,6 @@ import {
   useState,
   useCallback,
 } from "react";
-import settings from "@/railway/config";
 
 export interface Product {
   code: number;
@@ -104,7 +103,9 @@ export function SalesDataProvider({ children }: any) {
     setResource: (value: any[]) => void
   ) {
     return () => {
-      const url = new URL(`${settings.API_URL}/api/v1${resource}`);
+      const url = new URL(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1${resource}`
+      );
       fetch(url)
         .then((response) => response.json())
         .then((data) => setResource(data?.results ?? []))
