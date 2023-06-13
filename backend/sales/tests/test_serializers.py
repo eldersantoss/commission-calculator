@@ -74,7 +74,7 @@ class SaleSerializerTests(TestDataMixin, TestCase):
         """
 
         serialized_sale_data = {
-            "invoice_number": str(Sale.objects.last().id + 1),
+            "invoice_number": str(Sale.objects.first().id + 1),
             "date_time": self.sale_data["date_time"].isoformat(),
             "customer": "http://testserver"
             + self.sale_data["customer"].get_absolute_url(),

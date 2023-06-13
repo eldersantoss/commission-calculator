@@ -65,7 +65,7 @@ class SaleSerializer(serializers.HyperlinkedModelSerializer):
 
     def create(self, validated_data):
         products_data = validated_data.pop("saleproduct_set", [])
-        last_sale = Sale.objects.last()
+        last_sale = Sale.objects.first()
         validated_data["invoice_number"] = str(last_sale.id + 1 if last_sale else 1)
         sale = Sale.objects.create(**validated_data)
 
