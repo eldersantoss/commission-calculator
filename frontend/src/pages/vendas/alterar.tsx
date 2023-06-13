@@ -111,7 +111,7 @@ export default function CreateEditSalePage() {
     let messagePopupContent = "";
 
     if (selectedSale) {
-      url += `${selectedSale.id}/`;
+      url += `/${selectedSale.id}/`;
       method = "PUT";
       messagePopupContent = "VENDA ALTERADA COM SUCESSO!";
     } else {
