@@ -21,5 +21,5 @@ else
   --log-level DEBUG \
   --access-logfile "-" \
   --error-logfile "-" \
-  falatu.wsgi
+  commissioncalculator.wsgi
 fi
