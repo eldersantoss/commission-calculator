@@ -1,7 +1,7 @@
 import useSalesDataContext from "@/hooks/useSalesDataContext";
 import TableHeader from "../TableHeader";
 import styles from "./SalesTable.module.css";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { IconEdit, IconTrashFilled } from "@tabler/icons-react";
 import OptionButton from "../OptionButton";
 import { format } from "date-fns";
@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import useAppContext from "@/hooks/useAppContext";
 import ProductTable from "../ProductTable";
 import { loadSaleProductsTable } from "@/pages/vendas/alterar";
+import DeleteConfirmModal from "../DeleteConfirmModal";
 
 export default function SaleTable() {
   const { setDisplayedMessagePopup } = useAppContext();
@@ -27,6 +28,10 @@ export default function SaleTable() {
   const [onTableSaleProducts, setOnTableSaleProducts] = useState<SaleProduct[]>(
     []
   );
+
+  const [isVisibleModal, setIsVisibleModal] = useState(false);
+  const [saleToDelete, setSaleToDelete] = useState<Sale | null>(null);
+  const [confirmSaleDeletion, setConfirmSaleDeletion] = useState(false);
 
   const router = useRouter();
 
@@ -48,6 +53,50 @@ export default function SaleTable() {
       fetchProductsData();
     }
   }, [fetchProductsData, productsData]);
+
+  function editSaleAction(sale: Sale) {
+    setSelectedSale(sale);
+  }
+
+  useEffect(() => {
+    if (selectedSale !== null) router.push("/vendas/alterar");
+  }, [selectedSale, router]);
+
+  const closeModal = () => {
+    setIsVisibleModal(false);
+  };
+
+  const openModal = (sale: Sale) => {
+    setIsVisibleModal(true);
+    setSaleToDelete(sale);
+  };
+
+  const removeSale = () => {
+    setConfirmSaleDeletion(true);
+  };
+
+  const deleteSale = useCallback(
+    (sale: Sale) => {
+      fetch(sale.url.replace("http", "https"), { method: "DELETE" })
+        .then((response) => {
+          if (response.ok) {
+            setDisplayedMessagePopup("VENDA REMOVIDA COM SUCESSO!");
+            setSalesData(salesData.filter((currSale) => currSale != sale));
+            setConfirmSaleDeletion(false);
+            setIsVisibleModal(false);
+            setSaleToDelete(null);
+          } else {
+            console.error("Erro ao deletar venda", response);
+          }
+        })
+        .catch((error) => console.error(error));
+    },
+    [salesData, setDisplayedMessagePopup, setSalesData]
+  );
+
+  useEffect(() => {
+    confirmSaleDeletion && saleToDelete && deleteSale(saleToDelete);
+  }, [saleToDelete, deleteSale, confirmSaleDeletion]);
 
   function renderTable(headers: string[], data: any[]) {
     return (
@@ -82,7 +131,7 @@ export default function SaleTable() {
               <OptionButton action={() => editSaleAction(sale)}>
                 <IconEdit />
               </OptionButton>
-              <OptionButton exclude action={() => deleteSaleAction(sale)}>
+              <OptionButton exclude action={() => openModal(sale)}>
                 <IconTrashFilled />
               </OptionButton>
             </td>
@@ -120,27 +169,6 @@ export default function SaleTable() {
     }
   }
 
-  function editSaleAction(sale: Sale) {
-    setSelectedSale(sale);
-  }
-
-  useEffect(() => {
-    if (selectedSale !== null) router.push("/vendas/alterar");
-  }, [selectedSale, router]);
-
-  function deleteSaleAction(sale: Sale) {
-    fetch(sale.url.replace("http", "https"), { method: "DELETE" })
-      .then((response) => {
-        if (response.ok) {
-          setDisplayedMessagePopup("VENDA REMOVIDA COM SUCESSO!");
-          setSalesData(salesData.filter((currSale) => currSale != sale));
-        } else {
-          console.error("Erro ao deletar venda", response);
-        }
-      })
-      .catch((error) => console.error(error));
-  }
-
   return (
     <div
       style={{
@@ -154,6 +182,11 @@ export default function SaleTable() {
       }}
     >
       {renderTable(headers, salesData)}
+      {isVisibleModal ? (
+        <DeleteConfirmModal closeModal={closeModal} removeSale={removeSale} />
+      ) : (
+        false
+      )}
     </div>
   );
 }
