@@ -28,10 +28,7 @@ export default function SaleTable() {
   const [onTableSaleProducts, setOnTableSaleProducts] = useState<SaleProduct[]>(
     []
   );
-
-  const [isVisibleModal, setIsVisibleModal] = useState(false);
   const [saleToDelete, setSaleToDelete] = useState<Sale | null>(null);
-  const [confirmSaleDeletion, setConfirmSaleDeletion] = useState(false);
 
   const router = useRouter();
 
@@ -62,41 +59,19 @@ export default function SaleTable() {
     if (selectedSale !== null) router.push("/vendas/alterar");
   }, [selectedSale, router]);
 
-  const closeModal = () => {
-    setIsVisibleModal(false);
-  };
-
-  const openModal = (sale: Sale) => {
-    setIsVisibleModal(true);
-    setSaleToDelete(sale);
-  };
-
-  const removeSale = () => {
-    setConfirmSaleDeletion(true);
-  };
-
-  const deleteSale = useCallback(
-    (sale: Sale) => {
-      fetch(sale.url.replace("http", "https"), { method: "DELETE" })
-        .then((response) => {
-          if (response.ok) {
-            setDisplayedMessagePopup("VENDA REMOVIDA COM SUCESSO!");
-            setSalesData(salesData.filter((currSale) => currSale != sale));
-            setConfirmSaleDeletion(false);
-            setIsVisibleModal(false);
-            setSaleToDelete(null);
-          } else {
-            console.error("Erro ao deletar venda", response);
-          }
-        })
-        .catch((error) => console.error(error));
-    },
-    [salesData, setDisplayedMessagePopup, setSalesData]
-  );
-
-  useEffect(() => {
-    confirmSaleDeletion && saleToDelete && deleteSale(saleToDelete);
-  }, [saleToDelete, deleteSale, confirmSaleDeletion]);
+  function removeSale(sale: Sale) {
+    fetch(sale.url.replace("http", "https"), { method: "DELETE" })
+      .then((response) => {
+        if (response.ok) {
+          setDisplayedMessagePopup("VENDA REMOVIDA COM SUCESSO!");
+          setSalesData(salesData.filter((currSale) => currSale != sale));
+          setSaleToDelete(null);
+        } else {
+          console.error("Erro ao deletar venda", response);
+        }
+      })
+      .catch((error) => console.error(error));
+  }
 
   function renderTable(headers: string[], data: any[]) {
     return (
@@ -131,7 +106,7 @@ export default function SaleTable() {
               <OptionButton action={() => editSaleAction(sale)}>
                 <IconEdit />
               </OptionButton>
-              <OptionButton exclude action={() => openModal(sale)}>
+              <OptionButton exclude action={() => setSaleToDelete(sale)}>
                 <IconTrashFilled />
               </OptionButton>
             </td>
@@ -182,10 +157,11 @@ export default function SaleTable() {
       }}
     >
       {renderTable(headers, salesData)}
-      {isVisibleModal ? (
-        <DeleteConfirmModal closeModal={closeModal} removeSale={removeSale} />
-      ) : (
-        false
+      {saleToDelete && (
+        <DeleteConfirmModal
+          closeModal={() => setSaleToDelete(null)}
+          removeSale={() => removeSale(saleToDelete)}
+        />
       )}
     </div>
   );
