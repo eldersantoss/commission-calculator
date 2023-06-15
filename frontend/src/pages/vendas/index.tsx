@@ -10,6 +10,7 @@ import MainButton from "@/components/MainButton";
 import PageActions from "@/components/PageActions";
 import Link from "next/link";
 import MessagePopup from "@/components/MessagePopup";
+import DeleteConfirmModal from "@/components/DeleteConfirmModal";
 
 export default function SalesPage() {
   const { setPageTitle, openSideBar, displayedMessagePopup, pageTitle } =
@@ -18,6 +19,9 @@ export default function SalesPage() {
   useEffect(() => {
     if (pageTitle !== "Vendas") setPageTitle("Vendas");
   }, [pageTitle, setPageTitle]);
+
+  const removeSale = () => console.log("Removendo a venda...");
+  const closeModal = () => console.log("Fechando modal...");
 
   return (
     <div>
