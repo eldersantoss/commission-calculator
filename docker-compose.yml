@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: ./backend/docker/Dockerfile
-    command: scripts/start_services.sh backend
+    command: bash -c "chmod +x scripts/*.sh && scripts/start_services.sh backend"
     ports:
       - 8000:8000
     volumes:
