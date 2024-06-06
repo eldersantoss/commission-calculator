@@ -175,12 +175,11 @@ Para configurar o ambiente de desenvolvimento, siga as etapas abaixo:
 
 ## **Backend**
 
-**1.** Acesse a pasta `backend` dentro do diretório clonado.
+**1.** Certifique-se de ter o Docker Compose instalado em seu sistema.
 
-**2.** Certifique-se de ter o Docker Compose instalado em seu sistema.
+**2.** Acesse a pasta `backend` dentro do diretório clonado.
 
 **3.** Crie o arquivo `.env` com base no arquivo `.env.example`:
-
 ```bash
 cp .env.example .env
 ```
@@ -194,21 +193,28 @@ cp .env.example .env
 
 ## **Frontend**
 
-**1.** Acesse a pasta `frontend` dentro do diretório clonado.
+**1.** Certifique-se de ter o NodeJS instalado em seu sistema.
 
-**2.** Certifique-se de ter o NodeJS instalado em seu sistema.
+**2.** Acesse a pasta `frontend` dentro do diretório clonado.
 
 **3.** Instale as dependências do projeto:
 ```bash
 npm i
 ```
 
-**4.** Execute o comando para iniciar o servidor de desenvolvimento:
+**4.** Crie o arquivo `.env` com base no arquivo `.env.example`:
+
+```bash
+cp .env.example .env
+```
+  * Não esqueça de atualizar as variáveis do arquivo `.env` com base no seu ambiente.
+
+**5.** Execute o comando para iniciar o servidor de desenvolvimento:
 ```bash
 npm run dev
 ```
 
-**5.** Acesse a aplicação em http://localhost:3000/.
+**6.** Acesse a aplicação em http://localhost:3000/.
 
 
 ## **🛠 Tecnologias**
