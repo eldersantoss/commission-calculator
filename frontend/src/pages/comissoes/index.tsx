@@ -21,7 +21,6 @@ export default function CommissionsPage() {
     <div>
       <TopBar />
       <Container>
-        {openSideBar && <SideBar />}
         <CommissionsDataProvider>
           <MainContent>
             <PageActions>

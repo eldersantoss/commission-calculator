@@ -1,4 +1,4 @@
-import SideBarButton from "../SideBarButton";
+import SideBarButton from "./SideBarButton";
 import { IconCalculator, IconReportMoney } from "@tabler/icons-react";
 import useSalesDataContext from "@/hooks/useSalesDataContext";
 import { useRouter } from "next/router";
@@ -18,11 +18,11 @@ export default function SideBar() {
 
   return (
     <div
+      role="menu"
       style={{
         backgroundColor: "#F2F2F2",
         width: "20vw",
-        height: "100vh",
-        padding: "20px 0",
+        height: "100%",
       }}
     >
       <SideBarButton action={salesButtonAction}>

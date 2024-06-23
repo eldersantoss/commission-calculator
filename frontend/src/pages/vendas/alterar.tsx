@@ -106,7 +106,7 @@ export default function CreateEditSalePage() {
     onTableSaleProducts: SaleProduct[],
     selectedSale: Sale | null
   ) {
-    let url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/sales`;
+    let url = `${process.env.NEXT_PUBLIC_API_URL}/sales`;
     let method = "";
     let messagePopupContent = "";
 
@@ -155,9 +155,7 @@ export default function CreateEditSalePage() {
 
   return (
     <div>
-      <TopBar />
       <Container>
-        {openSideBar && <SideBar />}
         <MainContent>
           <div style={{ display: "flex", width: "100%", height: "100%" }}>
             <div
