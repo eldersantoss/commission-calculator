@@ -25,7 +25,7 @@ export function CommissionsDataProvider({ children }: any) {
 
   function fetchCommissionsData() {
     const url = new URL(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/persons/vendors/commissions/`
+      `${process.env.NEXT_PUBLIC_API_URL}/persons/vendors/commissions/`
     );
     url.searchParams.append("start_period", startPeriod);
     url.searchParams.append("end_period", endPeriod);
