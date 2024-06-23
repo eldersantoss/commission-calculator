@@ -20,14 +20,9 @@ export default function SalesPage() {
     if (pageTitle !== "Vendas") setPageTitle("Vendas");
   }, [pageTitle, setPageTitle]);
 
-  const removeSale = () => console.log("Removendo a venda...");
-  const closeModal = () => console.log("Fechando modal...");
-
   return (
     <div>
-      <TopBar />
       <Container>
-        {openSideBar && <SideBar />}
         <MainContent>
           <PageActions>
             <Caption text="Relatório de Vendas" />
