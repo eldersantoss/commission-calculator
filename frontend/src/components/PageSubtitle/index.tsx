@@ -1,8 +1,8 @@
-interface SubTitleProps {
+interface PageSubtitleProps {
   text: string;
 }
 
-export default function Caption({ text }: SubTitleProps) {
+export default function PageSubtitle({ text }: PageSubtitleProps) {
   return (
     <h3
       style={{

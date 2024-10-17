@@ -1,7 +1,7 @@
-import SideBarButton from "./SideBarButton";
+import useSalesDataContext from "@/pages/vendas/hooks/useSalesDataContext";
 import { IconCalculator, IconReportMoney } from "@tabler/icons-react";
-import useSalesDataContext from "@/hooks/useSalesDataContext";
 import { useRouter } from "next/router";
+import SideBarButton from "./SideBarButton";
 
 export default function SideBar() {
   const { setSelectedSale } = useSalesDataContext();

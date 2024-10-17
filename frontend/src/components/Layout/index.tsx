@@ -1,34 +1,31 @@
 import useAppContext from "@/hooks/useAppContext";
 import { ReactNode } from "react";
+import MainContent from "../MainContent";
 import SideBar from "../SideBar";
 import TopBar from "../TopBar";
 
-interface ContainerProps {
+interface LayoutProps {
   children: ReactNode;
 }
 
-export default function Container({ children }: ContainerProps) {
+export default function Layout({ children }: LayoutProps) {
   const { openSideBar } = useAppContext();
 
   return (
-    <main
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100vh",
-        width: "100vw",
-      }}
-    >
+    <>
       <TopBar />
-      <div
+
+      <main
         style={{
           display: "flex",
-          height: "100%",
+          height: "100vh",
+          width: "100vw",
         }}
       >
         {openSideBar && <SideBar />}
-        {children}
-      </div>
-    </main>
+
+        <MainContent>{children}</MainContent>
+      </main>
+    </>
   );
 }

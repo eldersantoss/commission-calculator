@@ -1,10 +1,12 @@
 import { ReactNode } from "react";
 
-interface PageActionsProps {
+interface SubtitleContainerProps {
   children: ReactNode;
 }
 
-export default function PageActions({ children }: PageActionsProps) {
+export default function SubtitleContainer({
+  children,
+}: SubtitleContainerProps) {
   return (
     <div
       style={{

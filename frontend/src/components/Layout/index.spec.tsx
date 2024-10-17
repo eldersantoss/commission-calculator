@@ -1,15 +1,14 @@
-import React from "react";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 
-import Container from ".";
+import Layout from ".";
 
 describe("Container Component", () => {
   it("Should display side bar on click in IconMenu button", async () => {
     render(
-      <Container>
+      <Layout>
         <></>
-      </Container>
+      </Layout>
     );
 
     expect(screen.queryByRole("menu")).not.toBeInTheDocument();

@@ -1,6 +1,7 @@
+import useAppContext from "@/hooks/useAppContext";
 import { IconMenu2 } from "@tabler/icons-react";
 import Image from "next/image";
-import useAppContext from "@/hooks/useAppContext";
+import Link from "next/link";
 
 export default function TopBar() {
   const { pageTitle, toggleSideBar } = useAppContext();
@@ -30,11 +31,20 @@ export default function TopBar() {
           >
             <IconMenu2 stroke={"3"} />
           </button>
-          <Image src="/logo.svg" width={202} height={58} alt="Logo" priority />
+
+          <Link href="/">
+            <Image
+              src="/logo.svg"
+              width={202}
+              height={58}
+              alt="Logo"
+              priority
+            />
+          </Link>
         </div>
       </div>
 
-      <h1 style={{ position: "absolute", top: "16px", left: "46%" }}>
+      <h1 style={{ position: "absolute", top: "25px", left: "46%" }}>
         {pageTitle}
       </h1>
     </header>

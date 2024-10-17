@@ -10,10 +10,8 @@ export default function MainContent({ children }: MainContentProps) {
       style={{
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
         alignItems: "center",
-        padding: "50px",
-        height: "100%",
+        margin: "50px",
         width: "100%",
       }}
     >
