@@ -1,14 +1,11 @@
-import SideBar from "@/components/SideBar";
-import TopBar from "@/components/TopBar";
-import Caption from "@/components/Caption";
+import Layout from "@/components/Layout";
+import PageSubtitle from "@/components/PageSubtitle";
+import SubtitleContainer from "@/components/SubtitleContainer";
 import useAppContext from "@/hooks/useAppContext";
+import CommissionsTable from "@/pages/comissoes/components/CommissionsTable";
+import DatePeriodForm from "@/pages/comissoes/components/DatePeriodForm";
+import { CommissionsDataProvider } from "@/pages/comissoes/contexts/CommissionsDataContext";
 import { useEffect } from "react";
-import Container from "@/components/Container";
-import MainContent from "@/components/MainContent";
-import DatePeriodForm from "@/components/DatePeriodForm";
-import CommissionsTable from "@/components/CommissionsTable";
-import { CommissionsDataProvider } from "@/contexts/CommissionsDataContext";
-import PageActions from "@/components/PageActions";
 
 export default function CommissionsPage() {
   const { setPageTitle, openSideBar } = useAppContext();
@@ -18,19 +15,15 @@ export default function CommissionsPage() {
   }, [setPageTitle]);
 
   return (
-    <div>
-      <TopBar />
-      <Container>
-        <CommissionsDataProvider>
-          <MainContent>
-            <PageActions>
-              <Caption text="Relatório de Comissões" />
-              <DatePeriodForm />
-            </PageActions>
-            <CommissionsTable />
-          </MainContent>
-        </CommissionsDataProvider>
-      </Container>
-    </div>
+    <CommissionsDataProvider>
+      <Layout>
+        <SubtitleContainer>
+          <PageSubtitle text="Relatório de Comissões" />
+          <DatePeriodForm />
+        </SubtitleContainer>
+
+        <CommissionsTable />
+      </Layout>
+    </CommissionsDataProvider>
   );
 }

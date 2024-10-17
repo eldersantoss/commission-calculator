@@ -1,5 +1,5 @@
-import useCommissionsDataContext from "@/hooks/useCommissionsDataContext";
-import TableHeader from "../TableHeader";
+import useCommissionsDataContext from "@/pages/comissoes/hooks/useCommissionsDataContext";
+import TableHeader from "../../../../components/TableHeader";
 import styles from "./CommissionsTable.module.css";
 
 export default function CommissionsTable() {
