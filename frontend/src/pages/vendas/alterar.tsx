@@ -1,26 +1,25 @@
-import SideBar from "@/components/SideBar";
-import TopBar from "@/components/TopBar";
-import useAppContext from "@/hooks/useAppContext";
-import { useState, useEffect, Dispatch, SetStateAction } from "react";
-import Container from "@/components/Container";
-import MainContent from "@/components/MainContent";
-import useSalesDataContext from "@/hooks/useSalesDataContext";
-import ProductForm from "@/components/ProductForm";
-import SaleForm, { getPersonSelectOptions } from "@/components/SaleForm";
-import ProductTable from "@/components/ProductTable";
-import VerticalSpacer from "@/components/VerticalSpacer";
+import Layout from "@/components/Layout";
 import MainButton from "@/components/MainButton";
-import { useRouter } from "next/router";
+import { Option } from "@/components/SelectInput";
+import VerticalSpacer from "@/components/VerticalSpacer";
+import useAppContext from "@/hooks/useAppContext";
+import ProductForm from "@/pages/vendas/components/ProductForm";
+import ProductTable from "@/pages/vendas/components/ProductTable";
+import SaleForm, {
+  getPersonSelectOptions,
+} from "@/pages/vendas/components/SaleForm";
+import SaleResume from "@/pages/vendas/components/SaleResume";
 import {
   Person,
   Product,
   Sale,
   SaleProduct,
   SaleProductURL,
-} from "@/contexts/SalesDataContext";
-import SaleResume from "@/components/SaleResume";
-import { parse, formatISO, format } from "date-fns";
-import { Option } from "@/components/SelectInput";
+} from "@/pages/vendas/contexts/SalesDataContext";
+import useSalesDataContext from "@/pages/vendas/hooks/useSalesDataContext";
+import { format, formatISO, parse } from "date-fns";
+import { useRouter } from "next/router";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 export default function CreateEditSalePage() {
   const { setPageTitle, openSideBar, setDisplayedMessagePopup } =
@@ -154,74 +153,72 @@ export default function CreateEditSalePage() {
   }
 
   return (
-    <div>
-      <Container>
-        <MainContent>
-          <div style={{ display: "flex", width: "100%", height: "100%" }}>
-            <div
-              style={{ display: "flex", flexDirection: "column", width: "65%" }}
-            >
-              <ProductForm
-                productsData={productsData}
-                onTableSaleProducts={onTableSaleProducts}
-                setOnTableSaleProducts={setOnTableSaleProducts}
-                productSelectedOption={productSelectedOption}
-                setProductSelectedOption={setProductSelectedOption}
-                quantity={quantity}
-                setQuantity={setQuantity}
-              />
-              <ProductTable
-                onTableSaleProducts={onTableSaleProducts}
-                setOnTableSaleProducts={setOnTableSaleProducts}
-                saleProducts={onTableSaleProducts}
-                allowEdit
-              />
-            </div>
-            <VerticalSpacer />
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                width: "35%",
-                height: "100%",
+    <Layout>
+      <div style={{ display: "flex", width: "100%", height: "85%" }}>
+        <div style={{ display: "flex", flexDirection: "column", width: "65%" }}>
+          <ProductForm
+            productsData={productsData}
+            onTableSaleProducts={onTableSaleProducts}
+            setOnTableSaleProducts={setOnTableSaleProducts}
+            productSelectedOption={productSelectedOption}
+            setProductSelectedOption={setProductSelectedOption}
+            quantity={quantity}
+            setQuantity={setQuantity}
+          />
+          <ProductTable
+            onTableSaleProducts={onTableSaleProducts}
+            setOnTableSaleProducts={setOnTableSaleProducts}
+            saleProducts={onTableSaleProducts}
+            allowEdit
+          />
+        </div>
+
+        <VerticalSpacer />
+
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            width: "35%",
+          }}
+        >
+          <SaleForm
+            timeStampValue={timeStampValue}
+            setTimeStampValue={setTimeStampValue}
+            vendorSelectedOption={vendorSelectedOption}
+            setVendorSelectedOption={setVendorSelectedOption}
+            customerSelectedOption={customerSelectedOption}
+            setCustomerSelectedOption={setCustomerSelectedOption}
+          />
+
+          <SaleResume onTableSaleProducts={onTableSaleProducts} />
+
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <MainButton
+              content={"Cancelar"}
+              action={() => {
+                setSelectedSale(null);
+                router.push("/");
               }}
-            >
-              <SaleForm
-                timeStampValue={timeStampValue}
-                setTimeStampValue={setTimeStampValue}
-                vendorSelectedOption={vendorSelectedOption}
-                setVendorSelectedOption={setVendorSelectedOption}
-                customerSelectedOption={customerSelectedOption}
-                setCustomerSelectedOption={setCustomerSelectedOption}
-              />
-              <SaleResume onTableSaleProducts={onTableSaleProducts} />
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <MainButton
-                  content={"Cancelar"}
-                  action={() => {
-                    setSelectedSale(null);
-                    router.push("/");
-                  }}
-                />
-                <MainButton
-                  disabled={finishButtonDisabled}
-                  content={"Finalizar"}
-                  action={() => {
-                    createOrUpdateSale(
-                      timeStampValue,
-                      customerSelectedOption.value,
-                      vendorSelectedOption.value,
-                      onTableSaleProducts,
-                      selectedSale
-                    );
-                  }}
-                />
-              </div>
-            </div>
+            />
+            <MainButton
+              disabled={finishButtonDisabled}
+              content={"Finalizar"}
+              action={() => {
+                createOrUpdateSale(
+                  timeStampValue,
+                  customerSelectedOption.value,
+                  vendorSelectedOption.value,
+                  onTableSaleProducts,
+                  selectedSale
+                );
+              }}
+            />
           </div>
-        </MainContent>
-      </Container>
-    </div>
+        </div>
+      </div>
+    </Layout>
   );
 }
 

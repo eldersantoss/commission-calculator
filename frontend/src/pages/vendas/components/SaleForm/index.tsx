@@ -1,8 +1,8 @@
+import { Person } from "@/pages/vendas/contexts/SalesDataContext";
+import useSalesDataContext from "@/pages/vendas/hooks/useSalesDataContext";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import SelectInput, { Option } from "../SelectInput";
-import TimeStampInput from "../TimeStampInput";
-import { Person } from "@/contexts/SalesDataContext";
-import useSalesDataContext from "@/hooks/useSalesDataContext";
+import SelectInput, { Option } from "../../../../components/SelectInput";
+import TimeStampInput from "../../../../components/TimeStampInput";
 
 interface SaleFormProps {
   timeStampValue: string;

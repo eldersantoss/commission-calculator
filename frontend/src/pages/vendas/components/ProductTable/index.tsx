@@ -1,4 +1,4 @@
-import { SaleProduct } from "@/contexts/SalesDataContext";
+import { SaleProduct } from "@/pages/vendas/contexts/SalesDataContext";
 import { IconTrashFilled } from "@tabler/icons-react";
 import { Dispatch, SetStateAction } from "react";
 

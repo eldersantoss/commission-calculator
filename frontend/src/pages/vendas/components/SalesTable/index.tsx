@@ -1,16 +1,16 @@
-import useSalesDataContext from "@/hooks/useSalesDataContext";
-import TableHeader from "../TableHeader";
-import styles from "./SalesTable.module.css";
-import { useCallback, useEffect, useState } from "react";
-import { IconEdit, IconTrashFilled } from "@tabler/icons-react";
-import OptionButton from "../OptionButton";
-import { format } from "date-fns";
-import { Sale, SaleProduct } from "@/contexts/SalesDataContext";
-import { useRouter } from "next/router";
 import useAppContext from "@/hooks/useAppContext";
-import ProductTable from "../ProductTable";
 import { loadSaleProductsTable } from "@/pages/vendas/alterar";
-import DeleteConfirmModal from "../DeleteConfirmModal";
+import { Sale, SaleProduct } from "@/pages/vendas/contexts/SalesDataContext";
+import useSalesDataContext from "@/pages/vendas/hooks/useSalesDataContext";
+import { IconEdit, IconTrashFilled } from "@tabler/icons-react";
+import { format } from "date-fns";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import DeleteConfirmModal from "../../../../components/DeleteConfirmModal";
+import OptionButton from "../../../../components/OptionButton";
+import TableHeader from "../../../../components/TableHeader";
+import ProductTable from "../ProductTable";
+import styles from "./SalesTable.module.css";
 
 export default function SaleTable() {
   const { setDisplayedMessagePopup } = useAppContext();

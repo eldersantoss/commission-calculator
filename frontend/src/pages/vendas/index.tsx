@@ -1,16 +1,12 @@
-import SideBar from "@/components/SideBar";
-import TopBar from "@/components/TopBar";
-import Caption from "@/components/Caption";
-import useAppContext from "@/hooks/useAppContext";
-import { useEffect } from "react";
-import Container from "@/components/Container";
-import MainContent from "@/components/MainContent";
-import SalesTable from "@/components/SalesTable";
+import Layout from "@/components/Layout";
 import MainButton from "@/components/MainButton";
-import PageActions from "@/components/PageActions";
-import Link from "next/link";
 import MessagePopup from "@/components/MessagePopup";
-import DeleteConfirmModal from "@/components/DeleteConfirmModal";
+import PageSubtitle from "@/components/PageSubtitle";
+import SubtitleContainer from "@/components/SubtitleContainer";
+import useAppContext from "@/hooks/useAppContext";
+import SalesTable from "@/pages/vendas/components/SalesTable";
+import Link from "next/link";
+import { useEffect } from "react";
 
 export default function SalesPage() {
   const { setPageTitle, openSideBar, displayedMessagePopup, pageTitle } =
@@ -21,22 +17,19 @@ export default function SalesPage() {
   }, [pageTitle, setPageTitle]);
 
   return (
-    <div>
-      <Container>
-        <MainContent>
-          <PageActions>
-            <Caption text="Relatório de Vendas" />
-            {displayedMessagePopup ? (
-              <MessagePopup />
-            ) : (
-              <Link href="/vendas/alterar">
-                <MainButton content={"Inserir nova Venda"} />
-              </Link>
-            )}
-          </PageActions>
-          <SalesTable />
-        </MainContent>
-      </Container>
-    </div>
+    <Layout>
+      <SubtitleContainer>
+        <PageSubtitle text="Relatório de Vendas" />
+        {displayedMessagePopup ? (
+          <MessagePopup />
+        ) : (
+          <Link href="/vendas/alterar">
+            <MainButton content={"Inserir nova Venda"} />
+          </Link>
+        )}
+      </SubtitleContainer>
+
+      <SalesTable />
+    </Layout>
   );
 }

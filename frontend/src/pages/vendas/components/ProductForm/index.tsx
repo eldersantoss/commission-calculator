@@ -1,7 +1,7 @@
+import { Product, SaleProduct } from "@/pages/vendas/contexts/SalesDataContext";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import MainButton from "../MainButton";
-import SelectInput, { Option } from "../SelectInput";
-import { Product, SaleProduct } from "@/contexts/SalesDataContext";
+import MainButton from "../../../../components/MainButton";
+import SelectInput, { Option } from "../../../../components/SelectInput";
 
 interface ProductFormProps {
   productsData: Product[];
