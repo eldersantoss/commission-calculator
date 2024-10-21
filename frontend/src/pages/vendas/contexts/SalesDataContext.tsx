@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useCallback, useState } from "react";
 import {
   fetchCustomersData,
   fetchProductsData,
@@ -80,11 +80,17 @@ export function SalesDataProvider({ children }: any) {
     salesData,
     vendorsData,
     customersData,
-    fetchSalesData: () => fetchSalesData(setSalesData),
-    fetchVendorsData: () => fetchVendorsData(setVendorsData),
-    fetchCustomersData: () => fetchCustomersData(setCustomerData),
+    fetchSalesData: useCallback(() => fetchSalesData(setSalesData), []),
+    fetchVendorsData: useCallback(() => fetchVendorsData(setVendorsData), []),
+    fetchCustomersData: useCallback(
+      () => fetchCustomersData(setCustomerData),
+      []
+    ),
     productsData,
-    fetchProductsData: () => fetchProductsData(setProductsData),
+    fetchProductsData: useCallback(
+      () => fetchProductsData(setProductsData),
+      []
+    ),
     selectedSale,
     selectSale: (sale: Sale | null) => setSelectedSale(sale),
   };

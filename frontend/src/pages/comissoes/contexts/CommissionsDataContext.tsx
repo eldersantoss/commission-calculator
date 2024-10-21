@@ -1,4 +1,10 @@
-import { Dispatch, SetStateAction, createContext, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  createContext,
+  useCallback,
+  useState,
+} from "react";
 import { fetchCommissions } from "../services";
 
 export interface VendorCommission {
@@ -39,10 +45,9 @@ export function CommissionsDataProvider({ children }: any) {
     endPeriod,
     setEndPeriod,
     vendorCommissions,
-    fetchCommissionsData: () => {
-      console.log("fetching commissions data");
+    fetchCommissionsData: useCallback(() => {
       fetchCommissions(setVendorCommissions, startPeriod, endPeriod);
-    },
+    }, [startPeriod, endPeriod]),
   };
 
   return (
