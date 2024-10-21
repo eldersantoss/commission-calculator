@@ -18,7 +18,6 @@ export default function Layout({ children }: LayoutProps) {
       <main
         style={{
           display: "flex",
-          height: "100vh",
           width: "100vw",
         }}
       >
