@@ -4,11 +4,11 @@ import { useRouter } from "next/router";
 import SideBarButton from "./SideBarButton";
 
 export default function SideBar() {
-  const { setSelectedSale } = useSalesDataContext();
+  const { selectSale } = useSalesDataContext();
   const router = useRouter();
 
   function salesButtonAction() {
-    setSelectedSale(null);
+    selectSale(null);
     router.push("/");
   }
 

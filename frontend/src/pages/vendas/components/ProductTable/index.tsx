@@ -19,33 +19,63 @@ export default function ProductTable({
   allowEdit,
   resumeLine,
 }: ProductTableProps) {
-  const baseHeaders = [
-    "Produto/Serviço",
-    "Quantidade",
-    "Preço unitário",
-    "Total",
-  ];
-
   let headers: string[] = [];
-
-  showCommissionRate
-    ? (headers = [...baseHeaders, "% de Comissão", "Comissão"])
-    : (headers = [...baseHeaders]);
 
   function renderTableHeader(headers: string[]) {
     return (
       <tr style={{ borderBottom: "1px solid #888888" }}>
-        {headers.map((header, index) => (
-          <th
-            key={index}
-            style={{
-              padding: "10px",
-              textAlign: `${index == 0 ? "left" : "center"}`,
-            }}
-          >
-            {header}
-          </th>
-        ))}
+        <th
+          style={{
+            padding: "10px",
+            textAlign: "left",
+          }}
+        >
+          Produto/Serviço
+        </th>
+        <th
+          style={{
+            padding: "10px",
+            textAlign: "center",
+          }}
+        >
+          Quantidade
+        </th>
+        <th
+          style={{
+            padding: "10px",
+            textAlign: "center",
+          }}
+        >
+          Preço unitário
+        </th>
+        <th
+          style={{
+            padding: "10px",
+            textAlign: "center",
+          }}
+        >
+          Total
+        </th>
+        {showCommissionRate && (
+          <>
+            <th
+              style={{
+                padding: "10px",
+                textAlign: "center",
+              }}
+            >
+              % de Comissão
+            </th>
+            <th
+              style={{
+                padding: "10px",
+                textAlign: "center",
+              }}
+            >
+              Comissão
+            </th>
+          </>
+        )}
       </tr>
     );
   }

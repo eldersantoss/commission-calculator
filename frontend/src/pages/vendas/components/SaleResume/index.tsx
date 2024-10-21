@@ -21,6 +21,7 @@ export default function SaleResume({ onTableSaleProducts }: SaleResumeProps) {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
+        marginTop: "30px",
       }}
     >
       <p style={{ fontWeight: "400" }}>Valor total da venda:</p>

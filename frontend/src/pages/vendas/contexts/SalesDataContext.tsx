@@ -1,10 +1,10 @@
+import { createContext, useState } from "react";
 import {
-  Dispatch,
-  SetStateAction,
-  createContext,
-  useState,
-  useCallback,
-} from "react";
+  fetchCustomersData,
+  fetchProductsData,
+  fetchSalesData,
+  fetchVendorsData,
+} from "../services";
 
 export interface Product {
   code: number;
@@ -45,7 +45,6 @@ export interface Sale {
 
 export interface SalesDataContextProps {
   salesData: Sale[];
-  setSalesData: Dispatch<SetStateAction<Sale[]>>;
   fetchSalesData: () => void;
   vendorsData: Person[];
   fetchVendorsData: () => void;
@@ -54,12 +53,11 @@ export interface SalesDataContextProps {
   productsData: Product[];
   fetchProductsData: () => void;
   selectedSale: Sale | null;
-  setSelectedSale: Dispatch<SetStateAction<Sale | null>>;
+  selectSale: (sale: Sale | null) => void;
 }
 
 export const SalesDataContext = createContext<SalesDataContextProps>({
   salesData: [],
-  setSalesData: () => {},
   fetchSalesData: () => {},
   vendorsData: [],
   fetchVendorsData: () => {},
@@ -68,7 +66,7 @@ export const SalesDataContext = createContext<SalesDataContextProps>({
   productsData: [],
   fetchProductsData: () => {},
   selectedSale: null,
-  setSelectedSale: () => {},
+  selectSale: () => {},
 });
 
 export function SalesDataProvider({ children }: any) {
@@ -78,51 +76,17 @@ export function SalesDataProvider({ children }: any) {
   const [productsData, setProductsData] = useState<Product[]>([]);
   const [selectedSale, setSelectedSale] = useState<Sale | null>(null);
 
-  const fetchSalesData = useCallback(
-    () => fetchResourceData("/sales/", setSalesData)(),
-    []
-  );
-
-  const fetchVendorsData = useCallback(
-    () => fetchResourceData("/persons/vendors/", setVendorsData)(),
-    []
-  );
-
-  const fetchCustomersData = useCallback(
-    () => fetchResourceData("/persons/customers/", setCustomerData)(),
-    []
-  );
-
-  const fetchProductsData = useCallback(
-    () => fetchResourceData("/products/", setProductsData)(),
-    []
-  );
-
-  function fetchResourceData(
-    resource: string,
-    setResource: (value: any[]) => void
-  ) {
-    return () => {
-      const url = new URL(`${process.env.NEXT_PUBLIC_API_URL}${resource}`);
-      fetch(url)
-        .then((response) => response.json())
-        .then((data) => setResource(data?.results ?? []))
-        .catch((error) => console.error(error));
-    };
-  }
-
   const values = {
     salesData,
     vendorsData,
     customersData,
-    setSalesData,
-    fetchSalesData,
-    fetchVendorsData,
-    fetchCustomersData,
+    fetchSalesData: () => fetchSalesData(setSalesData),
+    fetchVendorsData: () => fetchVendorsData(setVendorsData),
+    fetchCustomersData: () => fetchCustomersData(setCustomerData),
     productsData,
-    fetchProductsData,
+    fetchProductsData: () => fetchProductsData(setProductsData),
     selectedSale,
-    setSelectedSale,
+    selectSale: (sale: Sale | null) => setSelectedSale(sale),
   };
 
   return (

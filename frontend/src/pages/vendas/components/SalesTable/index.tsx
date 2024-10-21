@@ -16,12 +16,11 @@ export default function SaleTable() {
   const { setDisplayedMessagePopup } = useAppContext();
   const {
     salesData,
-    setSalesData,
     fetchSalesData,
     selectedSale,
-    setSelectedSale,
     productsData,
     fetchProductsData,
+    selectSale,
   } = useSalesDataContext();
 
   const [tableIndexToToggle, setTableIndexToToggle] = useState(-1);
@@ -52,19 +51,20 @@ export default function SaleTable() {
   }, [fetchProductsData, productsData]);
 
   function editSaleAction(sale: Sale) {
-    setSelectedSale(sale);
+    selectSale(sale);
   }
 
   useEffect(() => {
     if (selectedSale !== null) router.push("/vendas/alterar");
   }, [selectedSale, router]);
 
+  // TODO: fix - should replace http by https only in production env
   function removeSale(sale: Sale) {
-    fetch(sale.url.replace("http", "https"), { method: "DELETE" })
+    fetch(sale.url, { method: "DELETE" })
       .then((response) => {
         if (response.ok) {
           setDisplayedMessagePopup("VENDA REMOVIDA COM SUCESSO!");
-          setSalesData(salesData.filter((currSale) => currSale != sale));
+          fetchSalesData();
           setSaleToDelete(null);
         } else {
           console.error("Erro ao deletar venda", response);
@@ -75,12 +75,10 @@ export default function SaleTable() {
 
   function renderTable(headers: string[], data: any[]) {
     return (
-      <div style={{ flexGrow: "1", width: "100%" }}>
-        <table className={styles.mainTable}>
-          <TableHeader headers={headers}></TableHeader>
-          <tbody>{renderTableData(data)}</tbody>
-        </table>
-      </div>
+      <table className={styles.mainTable}>
+        <TableHeader headers={headers}></TableHeader>
+        <tbody>{renderTableData(data)}</tbody>
+      </table>
     );
   }
 
@@ -111,7 +109,8 @@ export default function SaleTable() {
               </OptionButton>
             </td>
           </tr>
-          {index === tableIndexToToggle ? (
+
+          {index === tableIndexToToggle && (
             <tr key={`products-${sale.invoice_number}`}>
               <td colSpan={6}>
                 <ProductTable
@@ -123,8 +122,6 @@ export default function SaleTable() {
                 />
               </td>
             </tr>
-          ) : (
-            false
           )}
         </>
       );
@@ -145,24 +142,15 @@ export default function SaleTable() {
   }
 
   return (
-    <div
-      style={{
-        flexGrow: "1",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100%",
-        overflow: "auto",
-      }}
-    >
+    <>
       {renderTable(headers, salesData)}
+
       {saleToDelete && (
         <DeleteConfirmModal
           closeModal={() => setSaleToDelete(null)}
           removeSale={() => removeSale(saleToDelete)}
         />
       )}
-    </div>
+    </>
   );
 }

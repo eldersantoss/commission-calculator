@@ -22,15 +22,9 @@ import { useRouter } from "next/router";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 export default function CreateEditSalePage() {
-  const { setPageTitle, openSideBar, setDisplayedMessagePopup } =
-    useAppContext();
-  const {
-    selectedSale,
-    setSelectedSale,
-    vendorsData,
-    customersData,
-    productsData,
-  } = useSalesDataContext();
+  const { setPageTitle, setDisplayedMessagePopup } = useAppContext();
+  const { selectedSale, vendorsData, customersData, productsData, selectSale } =
+    useSalesDataContext();
   const router = useRouter();
 
   const [quantity, setQuantity] = useState<number>(1);
@@ -143,7 +137,7 @@ export default function CreateEditSalePage() {
       .then((response) => {
         if (response.ok) {
           router.push("/");
-          setSelectedSale(null);
+          selectSale(null);
           setDisplayedMessagePopup(messagePopupContent);
         } else {
           console.error("Erro ao criar ou editar venda", response);
@@ -194,11 +188,17 @@ export default function CreateEditSalePage() {
 
           <SaleResume onTableSaleProducts={onTableSaleProducts} />
 
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginTop: "30px",
+            }}
+          >
             <MainButton
               content={"Cancelar"}
               action={() => {
-                setSelectedSale(null);
+                selectSale(null);
                 router.push("/");
               }}
             />
