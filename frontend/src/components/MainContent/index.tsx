@@ -11,8 +11,10 @@ export default function MainContent({ children }: MainContentProps) {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        margin: "50px",
+        margin: "25px 50px",
         width: "100%",
+        height: "100%",
+        overflow: "auto",
       }}
     >
       {children}

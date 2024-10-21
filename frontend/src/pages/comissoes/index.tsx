@@ -8,7 +8,7 @@ import { CommissionsDataProvider } from "@/pages/comissoes/contexts/CommissionsD
 import { useEffect } from "react";
 
 export default function CommissionsPage() {
-  const { setPageTitle, openSideBar } = useAppContext();
+  const { setPageTitle } = useAppContext();
 
   useEffect(() => {
     setPageTitle("Comissões");

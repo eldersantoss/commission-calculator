@@ -3,7 +3,7 @@ import TableHeader from "../../../../components/TableHeader";
 import styles from "./CommissionsTable.module.css";
 
 export default function CommissionsTable() {
-  const { commissionsData } = useCommissionsDataContext();
+  const { vendorCommissions } = useCommissionsDataContext();
   const headers = ["Cód.", "Vendedor", "Total de vendas", "Total de comissões"];
 
   function renderMessage() {
@@ -76,8 +76,8 @@ export default function CommissionsTable() {
         width: "100%",
       }}
     >
-      {commissionsData.length > 0
-        ? renderTable(headers, commissionsData)
+      {vendorCommissions.length > 0
+        ? renderTable(headers, vendorCommissions)
         : renderMessage()}
     </div>
   );

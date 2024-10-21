@@ -1,11 +1,19 @@
 import { Dispatch, SetStateAction, createContext, useState } from "react";
+import { fetchCommissions } from "../services";
+
+export interface VendorCommission {
+  code: number;
+  name: string;
+  number_of_sales: number;
+  commission_value: number;
+}
 
 interface CommisionsDataContextProps {
   startPeriod: string;
   setStartPeriod: Dispatch<SetStateAction<string>>;
   endPeriod: string;
   setEndPeriod: Dispatch<SetStateAction<string>>;
-  commissionsData: [];
+  vendorCommissions: VendorCommission[];
   fetchCommissionsData: () => void;
 }
 
@@ -14,35 +22,27 @@ export const CommisionsDataContext = createContext<CommisionsDataContextProps>({
   setStartPeriod: () => {},
   endPeriod: "",
   setEndPeriod: () => {},
-  commissionsData: [],
+  vendorCommissions: [],
   fetchCommissionsData: () => {},
 });
 
 export function CommissionsDataProvider({ children }: any) {
   const [startPeriod, setStartPeriod] = useState<string>("");
   const [endPeriod, setEndPeriod] = useState<string>("");
-  const [commissionsData, setCommissionsData] = useState<[]>([]);
-
-  function fetchCommissionsData() {
-    const url = new URL(
-      `${process.env.NEXT_PUBLIC_API_URL}/persons/vendors/commissions/`
-    );
-    url.searchParams.append("start_period", startPeriod);
-    url.searchParams.append("end_period", endPeriod);
-
-    fetch(url)
-      .then((response) => response.json())
-      .then((data) => setCommissionsData(data?.results ?? []))
-      .catch((error) => console.error(error));
-  }
+  const [vendorCommissions, setVendorCommissions] = useState<
+    VendorCommission[]
+  >([]);
 
   const values = {
     startPeriod,
     setStartPeriod,
     endPeriod,
     setEndPeriod,
-    commissionsData,
-    fetchCommissionsData,
+    vendorCommissions,
+    fetchCommissionsData: () => {
+      console.log("fetching commissions data");
+      fetchCommissions(setVendorCommissions, startPeriod, endPeriod);
+    },
   };
 
   return (

@@ -12,10 +12,6 @@ export default function DatePeriodForm() {
     fetchCommissionsData,
   } = useCommissionsDataContext();
 
-  function handleClick() {
-    fetchCommissionsData();
-  }
-
   return (
     <span style={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
       <DateInput
@@ -31,7 +27,7 @@ export default function DatePeriodForm() {
         setDate={setEndPeriod}
       />
       <MainButton
-        action={handleClick}
+        action={fetchCommissionsData}
         content={<IconSearch height={"16px"} stroke={"4"} />}
       />
     </span>
