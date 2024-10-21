@@ -13,6 +13,7 @@ export default function DeleteConfirmModal({
   return (
     <div
       style={{
+        marginTop: "25vh",
         width: "485px",
         height: "245px",
         boxShadow: "2px 5px 10px 5px rgba(0, 0, 0, 0.1)",
