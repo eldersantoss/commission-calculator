@@ -39,6 +39,7 @@ export default function MainButton({
     backgroundColor: buttonBackgroundColor,
     color: primaryFontColor,
     border: borderStyle,
+    transition: "background-color 0.3s",
   };
 
   return (
